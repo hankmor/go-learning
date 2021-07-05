@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"log"
+
 	"rsc.io/quote"
 	// 自定义模块
 	"koobyte.com/greetings"
@@ -22,14 +23,6 @@ func main() {
 	fmt.Println(quote.Hello())
 	fmt.Println(quote.Glass())
 	fmt.Println(quote.Opt())
-	/*
-		输出：
-		Hello Go!
-		Don't communicate by sharing memory, share memory by communicating.
-		Hello, world.
-		I can eat glass and it doesn't hurt me.
-		If a program is too slow, it must have a loop.
-	*/
 
 	// 使用自定义模块
 
@@ -52,6 +45,33 @@ func main() {
 
 	message1, err1 := greetings.Hello1("Sam")
 	Print(message1, err1)
+
+	// 随机生成问候语
+
+	message2, err2 := greetings.RandomHello("Sam")
+	Print(message2, err2)
+
+	// 给多个人随机生成问候语
+	messages, err := greetings.Hellos([]string{"Sam", "Jack", "Jim"})
+	if err != nil {
+		log.Println(err)
+	}
+	fmt.Println(messages)
+
+	/*
+		> 输出内容：
+		初始化随机数...
+		Hello Go!
+		Don't communicate by sharing memory, share memory by communicating.
+		Hello, world.
+		I can eat glass and it doesn't hurt me.
+		If a program is too slow, it must have a loop.
+		Hi, koobyte.com, Welcome!
+		Hi, Sam, Welcome!
+		Hail, Sam! Well met!
+		map[Jack:Hail, Jack! Well met! Jim:Hi, Jim, welcome! Sam:Hi, Sam, welcome!]
+		greetings: 2021/07/05 20:08:35 empty name
+	*/
 }
 
 func Print(msg string, err error) {
