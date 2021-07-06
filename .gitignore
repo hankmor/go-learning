@@ -17,4 +17,5 @@
 .idea
 
 bin
+out
 *.sum
