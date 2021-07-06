@@ -41,15 +41,15 @@ func main() {
 	// 调用带异常信息的方法，该方法返回两个值
 
 	message, err := greetings.Hello1("")
-	Print(message, err)
+	p(message, err)
 
 	message1, err1 := greetings.Hello1("Sam")
-	Print(message1, err1)
+	p(message1, err1)
 
 	// 随机生成问候语
 
 	message2, err2 := greetings.RandomHello("Sam")
-	Print(message2, err2)
+	p(message2, err2)
 
 	// 给多个人随机生成问候语
 	messages, err := greetings.Hellos([]string{"Sam", "Jack", "Jim"})
@@ -74,7 +74,7 @@ func main() {
 	*/
 }
 
-func Print(msg string, err error) {
+func p(msg string, err error) {
 	// 日志前缀
 	log.SetPrefix("greetings: ")
 	if err != nil {
