@@ -7,9 +7,9 @@ import (
 	"net/http"
 )
 
-const FILE_EXT = ".txt"
-const FILE_DIR = "02-web/data/"
-const TEMPLATE_DIR = "02-web/wiki_v2/tmpl/"
+const FileExt = ".txt"
+const FileDir = "02-web/data/"
+const TemplateDir = "02-web/wiki_v2/tmpl/"
 
 // wiki页面，存储数据结构
 type Page struct {
@@ -21,7 +21,7 @@ type Page struct {
 // func save(p *Page) error {
 func (p *Page) save() error {
 	// 文件名，后缀为txt
-	filename := FILE_DIR + p.Title + FILE_EXT
+	filename := FileDir + p.Title + FileExt
 	// 写入文件，成功则无任何异常，否则返回异常信息
 	// 0600参数：八进制，表示当前用户有用创建文件的读写权限
 	return ioutil.WriteFile(filename, p.Body, 0600)
@@ -29,7 +29,7 @@ func (p *Page) save() error {
 
 // 加载页面
 func loadPage(title string) (*Page, error) {
-	filename := FILE_DIR + title + FILE_EXT
+	filename := FileDir + title + FileExt
 	// 读取文件内容，第二个返回值为异常信息
 	body, err := ioutil.ReadFile(filename)
 	// 有异常，则返回异常信息
@@ -87,9 +87,17 @@ func editHandler(w http.ResponseWriter, req *http.Request) {
 
 // 列表页面
 func listHandler(w http.ResponseWriter, r *http.Request) {
-	// fs, _ := ioutil.ReadDir(FILE_DIR)
-	// TODO 模板循环遍历？？
-	// renderTemplate(w, "edit.html", p)
+	fs, _ := ioutil.ReadDir(FileDir)
+	// 创建slice，长度与fs一致
+	ps := make([]Page, len(fs))
+	// 模板循环遍历
+	for i, fi := range fs {
+		title := fi.Name()[:len(fi.Name())-len(FileExt)]
+		// 给slice赋值
+		ps[i] = Page{title, nil}
+	}
+	t, _ := template.ParseFiles(TemplateDir + "list.html")
+	t.Execute(w, ps)
 }
 
 // 新增页面
@@ -99,7 +107,7 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 
 // 渲染html页面
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	t, _ := template.ParseFiles(TEMPLATE_DIR + tmpl + ".html")
+	t, _ := template.ParseFiles(TemplateDir + tmpl + ".html")
 	t.Execute(w, p)
 }
 
