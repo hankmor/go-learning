@@ -96,8 +96,7 @@ func listHandler(w http.ResponseWriter, r *http.Request) {
 		// 给slice赋值
 		ps[i] = Page{title, nil}
 	}
-	t, _ := template.ParseFiles(TemplateDir + "list.html")
-	t.Execute(w, ps)
+	renderTemplate(w, "list", ps)
 }
 
 // 新增页面
@@ -106,9 +105,17 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // 渲染html页面
-func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	t, _ := template.ParseFiles(TemplateDir + tmpl + ".html")
-	t.Execute(w, p)
+func renderTemplate(w http.ResponseWriter, tmpl string, p interface{}) {
+	t, err := template.ParseFiles(TemplateDir + tmpl + ".html")
+	if err != nil {
+		// 有异常，返回500
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	terr := t.Execute(w, p)
+	if terr != nil {
+		http.Error(w, terr.Error(), http.StatusInternalServerError)
+	}
 }
 
 func main() {
