@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑</title>
+</head>
+<body>
+<form action="/save" method="post">
+    <label>标题</label><input name="title" value="{{.Title}}"><br>
+    <label>内容</label><textarea rows="20" cols="80" name="body">{{printf "%s" .Body}}</textarea><br>
+    <input type="submit" value="保存">
+</form>
+</body>
+</html>

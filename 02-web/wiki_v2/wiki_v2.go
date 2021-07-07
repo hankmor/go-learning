@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"testing"
 )
 
 const FILE_EXT = ".txt"
 const FILE_DIR = "02-web/data/"
+const TEMPLATE_DIR = "02-web/wiki_v2/tmpl/"
 
 // wiki页面，存储数据结构
 type Page struct {
@@ -52,12 +52,10 @@ func viewHandler(w http.ResponseWriter, req *http.Request) {
 	// 存在错误，则前台返回错误信息
 	if err != nil {
 		// 忽略错误信息
-		fmt.Fprintf(w, "<div style='color: red;'>%s</div>", "访问的文件不存在！")
 		log.Printf("Handle request error, file may not exists: %v", err.Error())
 	} else {
-		// 渲染为Html内容，忽略错误信息
-		fmt.Fprintf(w, "<a href=\"/list\">返回列表</a> <a href=\"/edit/"+title+"\">编辑</a>"+
-			"<h1>%s</h1><div>%s</div>", p.Title, p.Body)
+		// 使用html/template包渲染Html内容，忽略错误信息
+		renderTemplate(w, "view", p)
 	}
 }
 
@@ -70,7 +68,6 @@ func saveHandler(w http.ResponseWriter, req *http.Request) {
 	p := &Page{Title: title, Body: []byte(body)}
 	err := p.save()
 	if err != nil {
-		fmt.Fprintf(w, "<div style='color: red;'>%s</div>", "保存文件出现异常！")
 		log.Printf("Save file error, title : %s, body: %s: ,error: %v", title, body, err.Error())
 	}
 	// 保存成功就返回到list页面
@@ -85,42 +82,25 @@ func editHandler(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		p = &Page{Title: title}
 	}
-	// 显示Html内容，这里是硬编码
-	fmt.Fprintf(w, `
-		<h1>编辑 %s</h1>
-		<form action="/save" method="POST">
-			<label>标题</label><input name="title" value="%s"><br>
-			<label>内容</label><textarea rows="20" cols="80" name="body">%s</textarea><br>
-			<input type="submit" value="保存">
-		</form>
-	`, p.Title, p.Title, p.Body)
+	renderTemplate(w, "edit", p)
 }
 
 // 列表页面
 func listHandler(w http.ResponseWriter, r *http.Request) {
-	fs, _ := ioutil.ReadDir(FILE_DIR)
-	s := "<h1>文件列表</h1> <a href=\"/create\">新增</a> <ul>"
-	for _, fi := range fs {
-		title := fi.Name()[:len(fi.Name())-len(FILE_EXT)]
-		s += "<li>" + title
-		s += " <a href=\"/view/" + title + "\">查看</a>"
-		s += " <a href=\"/edit/" + title + "\">编辑</a>"
-		s += "</li>"
-	}
-	s += "</ul>"
-	fmt.Fprintf(w, s)
+	// fs, _ := ioutil.ReadDir(FILE_DIR)
+	// TODO 模板循环遍历？？
+	// renderTemplate(w, "edit.html", p)
 }
 
 // 新增页面
 func createHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, `
-		<h1>新增</h1>
-		<form action="/save" method="POST">
-			<label>标题</label><input name="title"><br>
-			<label>内容</label><textarea rows="20" cols="80" name="body"></textarea><br>
-			<input type="submit" value="保存">
-		</form>
-	`)
+	renderTemplate(w, "create", nil)
+}
+
+// 渲染html页面
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+	t, _ := template.ParseFiles(TEMPLATE_DIR + tmpl + ".html")
+	t.Execute(w, p)
 }
 
 func main() {
@@ -136,21 +116,4 @@ func main() {
 	http.HandleFunc("/edit/", editHandler)
 	// 启动服务器
 	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-// 测试方法
-
-func testSaveAndLoad(t *testing.T) {
-	content := "This is a sample page."
-	p1 := &Page{Title: "TestPage", Body: []byte(content)}
-	err := p1.save()
-	if err != nil {
-		t.Fatalf("Save file \"TestPage.txt\" failed: %v", err)
-	}
-	p2, _ := loadPage("TestPage")
-	// 内容的byte切片转换为string
-	ret := string(p2.Body)
-	if ret != content {
-		t.Fatalf("Unexpected content %v, want %v:", ret, content)
-	}
 }
