@@ -7,9 +7,18 @@ import (
 	"net/http"
 )
 
-const FileExt = ".txt"
-const FileDir = "02-web/data/"
-const TemplateDir = "02-web/wiki_v2/tmpl/"
+const (
+	// 文件后缀
+	FileExt = ".txt"
+	// 文件目录
+	FileDir = "02-web/data/"
+	// 模板目录
+	TemplateDir = "02-web/wiki_v2/tmpl/"
+)
+
+// 运用模板缓存，在程序初始化时就加载模板，而不是每次调用方法再去加载一次
+// Must为一个panic，保证必须成功加载模板，否则程序退出
+var templates = template.Must(template.ParseFiles(TemplateDir+"create.html", TemplateDir+"edit.html", TemplateDir+"list.html", TemplateDir+"view.html"))
 
 // wiki页面，存储数据结构
 type Page struct {
@@ -106,16 +115,20 @@ func createHandler(w http.ResponseWriter, r *http.Request) {
 
 // 渲染html页面
 func renderTemplate(w http.ResponseWriter, tmpl string, p interface{}) {
-	t, err := template.ParseFiles(TemplateDir + tmpl + ".html")
+	// 每次调用都会解析一次模板，改为全局的templates
+	//t, err := template.ParseFiles(TemplateDir + tmpl + ".html")
+	// 调用全局templates.ExecuteTemplate方法，执行某一个模板
+	// 注意解析后模板名称不带目录
+	err := templates.ExecuteTemplate(w, tmpl+".html", p)
 	if err != nil {
 		// 有异常，返回500
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	terr := t.Execute(w, p)
-	if terr != nil {
-		http.Error(w, terr.Error(), http.StatusInternalServerError)
-	}
+	//terr := t.Execute(w, p)
+	//if terr != nil {
+	//	http.Error(w, terr.Error(), http.StatusInternalServerError)
+	//}
 }
 
 func main() {
