@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -57,19 +56,13 @@ func loadPage(title string) (*Page, error) {
 	return &Page{Title: title, Body: body}, nil
 }
 
-// ===========================
+// ============================================
 // 增改查http请求处理器
-// ===========================
+// 优化wikie_v2，使用函数参数和闭包来减少重复代码
+// ============================================
 
 // 页面渲染请求处理器
-func viewHandler(w http.ResponseWriter, req *http.Request) {
-	// URL必须以/view/开始，后边为文件名称，所以去掉/view/之后为文件名
-	// title := req.URL.Path[len("/view/"):]
-	title, err := getTitle(w, req)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+func viewHandler(w http.ResponseWriter, req *http.Request, title string) {
 	p, err := loadPage(title)
 	// 存在错误，则前台返回错误信息
 	if err != nil {
@@ -90,7 +83,6 @@ func saveHandler(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "Invalid Title", http.StatusNotAcceptable)
 		return
 	}
-
 	// 这里的body取出来是字符串
 	body := req.FormValue("body")
 	// 创建Page，body转为[]byte
@@ -104,13 +96,7 @@ func saveHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 // 编辑页面
-func editHandler(w http.ResponseWriter, req *http.Request) {
-	// title := req.URL.Path[len("/edit/"):]
-	title, err := getTitle(w, req)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+func editHandler(w http.ResponseWriter, req *http.Request, title string) {
 	p, err := loadPage(title)
 	// 文件不存在，则创建一个Page
 	if err != nil {
@@ -150,30 +136,21 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p interface{}) {
 	}
 }
 
-// 渲染html页面, 低效，优化为前边的renderTemplate方法！
-func renderTemplateInefficiently(w http.ResponseWriter, tmpl string, p interface{}) {
-	// 每次调用都会解析一次模板
-	t, err := template.ParseFiles(TemplateDir + tmpl + ".html")
-	if err != nil {
-		// 有异常，返回500
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+// 创建Handler，返回一个HandlerFunc
+// 使用函数作为参数，内部闭包调用
+func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
+	// 闭包，返回函数，内部调用fn参数
+	return func(w http.ResponseWriter, r *http.Request) {
+		// 获取title
+		m := validPath.FindStringSubmatch(r.URL.Path)
+		// 没有匹配，说明文件规则不合法，直接返回404
+		if m == nil {
+			http.NotFound(w, r)
+			return
+		}
+		// 调用fn
+		fn(w, r, m[2])
 	}
-	terr := t.Execute(w, p)
-	if terr != nil {
-		http.Error(w, terr.Error(), http.StatusInternalServerError)
-	}
-}
-
-func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
-	m := validPath.FindStringSubmatch(r.URL.Path)
-	// 没有匹配，说明文件规则不合法，直接返回404
-	if m == nil {
-		http.NotFound(w, r)
-		return "", errors.New("invalid page title")
-	}
-	// 返回匹配到的Title
-	return m[2], nil
 }
 
 func main() {
@@ -181,12 +158,12 @@ func main() {
 	http.HandleFunc("/", listHandler)
 	// 新增
 	http.HandleFunc("/create", createHandler)
-	// 查看
-	http.HandleFunc("/view/", viewHandler)
+	// 查看，创建handler
+	http.HandleFunc("/view/", makeHandler(viewHandler))
 	// 保存
 	http.HandleFunc("/save", saveHandler)
-	// 编辑
-	http.HandleFunc("/edit/", editHandler)
+	// 编辑，创建handler
+	http.HandleFunc("/edit/", makeHandler(editHandler))
 	// 启动服务器
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
