@@ -126,6 +126,46 @@ func main() {
 	// 字符串
 	// ==============
 
+	str := "Hello go"
+	c := str[0]
+	fmt.Printf("The length of %s is %d.\n", str, len(str)) // 使用len函数取字符串长度
+	fmt.Printf("The first character of %s is %c.\n", str, c)
+	// ~: The length of Hello go is 8.
+	// ~: The first character of Hello go is H.
+
+	// 字符串声明后，其中的内容不能修改
+	// str[0] = "X" // 编译错误：cannot assign to str[0] (strings are immutable)
+
+	// 字符串拼接
+	fmt.Printf("Hello" + " " + "World!\n") // ~: Hello World!
+	// 其他类型不能直接与字符串相加，需要转为字符串
+	// fmt.Printf(100 + "Hello" + " " + "World!\n") // 编译错误: invalid operation: 100 + "Hello World!\n" (mismatched types untyped int and untyped string)
+	fmt.Printf(string(100) + "Hello" + " " + "World!\n") // ~: dHello World!
+	fmt.Printf("100" + "Hello" + " " + "World!\n")       // ~: 100Hello World!
+
+	// 字符串遍历
+	// go语言默认编码为UTF-8，每个中文占3个字节
+	hw := "Hello,世界"
+	for i := 0; i < len(hw); i++ {
+		c := hw[i] // c的类型为: byte(uint8)
+		fmt.Println(i, c)
+	}
+	// 上边存在中文字符，UTF8中每个中文占3个字节，所以一共输出12个字符，每个字符的类型为byte(uint8的别名)
+
+	// 要正确打印中文等unicode字符，有两种方法
+	// 1、使用range遍历
+	for i, c := range hw { // c的类型为：rune(int32)
+		fmt.Printf("i=%d, c=%c.\n", i, c) // 正确输出中文
+	}
+	// 上边会正确输出10个字符，遍历c类型为rune(int32的别名)，而不是byte
+	// 2、使用rune slice，这种方法的下标i会跳跃，因为中文占3个字符
+	hws := []rune(hw)
+	fmt.Println(len(hws))
+	for i := 0; i < len(hws); i++ {
+		c := hws[i]                       // c的类型为：rune(int32)
+		fmt.Printf("i=%d, c=%c.\n", i, c) // 正确输出中文
+	}
+
 	// ==============
 	// 字符类型
 	// ==============
