@@ -36,6 +36,14 @@ func main() {
 	}
 	fmt.Println("Connected!")
 
+	// CRUD
+
+	fmt.Println("insertOne ...")
+	id := insertOne()
+
+	fmt.Println("deleteById by id ...")
+	deleteById(id)
+
 	fmt.Println("query all ...")
 	queryAll()
 
@@ -73,7 +81,7 @@ func queryById(id int64) {
 	fmt.Printf("Album found: %v\n", alb)
 }
 
-func insert() {
+func insertOne() int64 {
 	// 查询数据
 	albID, err := addAlbum(Album{
 		Title:  "The Modern Sound of Betty Carter",
@@ -84,6 +92,15 @@ func insert() {
 		log.Fatal(err)
 	}
 	fmt.Printf("ID of added album: %v\n", albID)
+	return albID
+}
+
+func deleteById(id int64) {
+	r, err := deleteAlbumById(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Deleted row count: %v\n", r)
 }
 
 type Album struct {
@@ -172,4 +189,16 @@ func addAlbum(alb Album) (int64, error) {
 		return 0, fmt.Errorf("addAlbum: %v", err)
 	}
 	return id, nil
+}
+
+func deleteAlbumById(id int64) (int64, error) {
+	result, err := db.Exec("DELETE FROM album where id = ?", id)
+	if err != nil {
+		return 0, fmt.Errorf("deleteAlbumById: %v", err)
+	}
+	r, err := result.RowsAffected()
+	if err != nil {
+		return 0, fmt.Errorf("deleteAlbumById: %v", err)
+	}
+	return r, nil
 }
