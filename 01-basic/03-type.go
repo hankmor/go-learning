@@ -170,9 +170,53 @@ func main() {
 	// 字符类型
 	// ==============
 
+	// Go的字符类型有两种：
+	// byte：uint8的别名，代表UTF-8字符串的单个字节的值
+	// rune：代表单个unicode字符
+	// 见前边字符串的例子
+
 	// ==============
 	// 数组
 	// ==============
+
+	// 数组的申明
+	const N = 2
+	var a1 [3]byte                     // 长度为32的数组，每个元素为一个字节
+	a1 = [3]byte{2, 2, 2}              // 给数组赋值
+	var a2 [2 * N]struct{ x, y int32 } // 复杂类型数组
+	var a3 [2]*float64                 // 指针数组
+	var a4 [3][2]int                   // 二维数组
+	var a5 [2][2][2]float64            // 多维数组，等同于[2]([2]([2]float64))
+
+	fmt.Println(a1) // ~: [2 2 2]
+	fmt.Println(a2) // ~: [{0 0} {0 0} {0 0} {0 0}]
+	fmt.Println(a3) // ~: [<nil> <nil>]
+	fmt.Println(a4) // ~: [[0 0] [0 0] [0 0]]
+	// 可使用len方法获取数组长度
+	fmt.Println(a5, len(a5)) // ~: [[[0 0] [0 0]] [[0 0] [0 0]]] 2
+
+	// 数组一旦定义，长度不可更改
+	a6 := [2]int{2, 1}
+	fmt.Println(a6)
+
+	// 元素访问
+	for i := 0; i < len(a6); i++ { // 循环遍历
+		fmt.Print(a6[i], " ") // 使用下标访问
+	}
+	// ~: 2 1
+	fmt.Println()
+	for i, a := range a6 { // 使用range遍历
+		fmt.Println("i=", i, ", v=", a)
+	}
+	// ~:
+	// i=0 , v=2
+	// i=1 , v=1
+
+	// go中数组的传递是值类型，作为参数传递时，函数操作的仅仅是数组的复制副本
+	a7 := [2]int{1, 2}
+	fmt.Println("before modify: ", a7) // ~; array in main:  [1 2]
+	modifyArray(a7)                    // ~: array in modifyArray:  [1 10]
+	fmt.Println("after modify: ", a7)  // ~; array in main:  [1 2]
 
 	// ==============
 	// 数组切片
@@ -185,4 +229,9 @@ func main() {
 
 func IsEqual(f1, f2, p float64) bool {
 	return math.Dim(f1, f2) < p
+}
+
+func modifyArray(array [2]int) {
+	array[1] = 10
+	fmt.Println("array in modifyArray: ", array)
 }
