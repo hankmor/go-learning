@@ -301,6 +301,49 @@ func main() {
 	// map
 	// ==============
 
+	/*
+		Go支持map类型，map是一堆键值对的未排序集合。
+		map通过make函数创建，通过delete函数删除元素
+	*/
+
+	// 创建人的结构体
+	type Person struct {
+		Id   string // 身份证
+		Name string // 姓名
+	}
+
+	// > 申明map
+	var persons map[string]Person
+	// > 创建map，第二个可选参数是map的存储能力
+	persons = make(map[string]Person)
+	persons = make(map[string]Person, 5) // 创建容量为10的map
+	// > 插入数据
+	persons["张三"] = Person{Id: "1", Name: "张三"}
+	persons["李四"] = Person{Id: "2", Name: "李四"}
+	persons["王五"] = Person{Id: "3", Name: "王五"}
+	// > 查找，第二个参数为一个bool，表示是否查找到
+	person1, ok := persons["张三"]
+	fmt.Println(ok, person1) // ~: true {1 张三}
+	person2, ok := persons["哈哈"]
+	fmt.Println(ok, person2) // ~: false { }
+	// > 遍历map
+	fmt.Println(len(persons)) // len获取长度为3
+	// 执行结果不同，可以看出map的无序性
+	for key, person := range persons {
+		fmt.Println(key, person)
+	}
+	// ~:
+	// 张三 {1 张三}
+	// 李四 {2 李四}
+	// 王五 {3 王五}
+	// > 删除元素
+	delete(persons, "张三")
+	for key, person := range persons {
+		fmt.Println(key, person)
+	}
+	// ~:
+	// 王五 {3 王五}
+	// 李四 {2 李四}
 }
 
 func IsEqual(f1, f2, p float64) bool {
