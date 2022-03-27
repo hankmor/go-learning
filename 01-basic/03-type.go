@@ -32,6 +32,7 @@ func main() {
 	// 布尔
 	// ==============
 
+	fmt.Println("===== bool =====")
 	// bool类型值为true和false，不接受其他值，不支持类型转换
 	var vb1 bool
 	vb1 = true
@@ -62,6 +63,7 @@ func main() {
 		uintptr						同指针				在32位平台下为4字节，64位平台下为8字节
 	*/
 
+	fmt.Println("===== int =====")
 	// int int32是两种类型，不能直接赋值
 	var i1 int32
 	i2 := 20
@@ -93,6 +95,7 @@ func main() {
 	// 浮点型
 	// ==============
 
+	fmt.Println("===== float =====")
 	var fv1 float32
 	fv1 = 12
 	fv2 := 12.0 // 被自动推导为float64类型，如果不加小数点，fvalue2会被推导为整型而不是浮点型
@@ -113,6 +116,7 @@ func main() {
 	// 复数类型
 	// ==============
 
+	fmt.Println("===== complex =====")
 	var cv1 complex64 // 由2个float32构成的复数类型
 	cv1 = 3.2 + 12i
 	cv2 := 3.2 + 12i           // value2是complex128类型
@@ -126,6 +130,7 @@ func main() {
 	// 字符串
 	// ==============
 
+	fmt.Println("===== string =====")
 	str := "Hello go"
 	c := str[0]
 	fmt.Printf("The length of %s is %d.\n", str, len(str)) // 使用len函数取字符串长度
@@ -170,6 +175,7 @@ func main() {
 	// 字符类型
 	// ==============
 
+	fmt.Println("===== 没有字符类型，用 rune 和 byte =====")
 	// Go的字符类型有两种：
 	// byte：uint8的别名，代表UTF-8字符串的单个字节的值
 	// rune：代表单个unicode字符
@@ -179,6 +185,7 @@ func main() {
 	// 数组
 	// ==============
 
+	fmt.Println("===== array =====")
 	// 数组的申明
 	const N = 2
 	var a1 [3]byte                     // 长度为32的数组，每个元素为一个字节
@@ -218,6 +225,15 @@ func main() {
 	modifyArray(a7)                    // ~: array in modifyArray:  [1 10]
 	fmt.Println("after modify: ", a7)  // ~; array in main:  [1 2]
 
+	// 用 ... 可用替代数组长度，go根据元素来自动确定长度
+	array1 := [...]int{10, 20, 30, 40}
+	fmt.Println(array1)
+	// 通过 下标:元素 的形式可以指定数组内某些下标的初始元素，其他元素为默认值
+	array2 := [...]int{1: 10, 2: 20}
+	fmt.Println(array2) // [0 10 20]
+	array3 := [5]int{1: 10, 2: 20}
+	fmt.Println(array3) // [0 10 20 0 0]
+
 	// ==============
 	// 数组切片
 	// ==============
@@ -227,6 +243,7 @@ func main() {
 		切片底层依赖一个数组，因此切片有长度和容量的概念，切片的容量就是底层数组的长度，而切片的长度是其存储元素的个数
 	*/
 
+	fmt.Println("===== slice =====")
 	// > 基于数组创建切片
 	// 使用array[开始下标:结束下标]的格式创建切片，注意不会包含结束下标
 	// 如果是基于整个数组创建切片，可以写为[:]，开始下标0可以省略，写为[:结束下标]，如果结束下标省略，则为开始下标到之后的所有数组元素
@@ -272,14 +289,14 @@ func main() {
 	slice9 := append(slice8, slice6...)           // 向切片中添加切片
 	fmt.Println(slice9)                           // ~: [0 0 2 3 5 7 0 0]
 	slice10 := append(slice9[3:6], slice8[2:]...) // 添加动态切片
-	fmt.Print(slice10)                            // ~: [3 5 7 2 3 5 7]
+	fmt.Println(slice10)                          // ~: [3 5 7 2 3 5 7]
 	// 任意类型的切片
 	var slice11 []interface{}
 	slice11 = append(slice11, 42, 3.1415, "foo") // 将数组切片添加不同的类型
-	fmt.Println(slice11)                         // ~:
+	fmt.Println(slice11)                         // ~: [42 3.1415 foo]
 	var slice12 []byte
 	slice12 = append(slice12, "bar"...)
-	fmt.Println(slice12)
+	fmt.Println(slice12) // ~: [98 97 114]
 
 	// > 切片拷贝
 	// 使用copy方法将原切片src的元素拷贝到目标切片dst中，返回拷贝的元素个数。拷贝的数组切片必须属于同一类型，并且如果两个切片长度不一致，则按照
@@ -289,11 +306,11 @@ func main() {
 	// copy(dst []byte, src string) int
 	var a = [...]int{0, 1, 2, 3, 4, 5, 6, 7} // 数组
 	var s = make([]int, 6)
-	var b = make([]byte, 5)
-	n1 := copy(s, a[0:]) // 将a[0:1]切片拷贝到s中
-	fmt.Println(n1, s)   // ~: 6 [0 1 2 3 4 5]
-	n2 := copy(s, s[2:])
+	n1 := copy(s, a[0:])     // 将a[0:1]切片拷贝到s中
+	fmt.Println(n1, s)       // ~: 6 [0 1 2 3 4 5]
+	n2 := copy(s, s[2:])     // s[2:] 为 [2 3 4 5]，按照最短的拷贝，所以占了前边4个位置，后边两个元素不变
 	fmt.Println(n2, s)       // ~: 4 [2 3 4 5 4 5]
+	var b = make([]byte, 5)  // 创建5个元素长度的byte类型切片
 	n3 := copy(b, "abcdefg") // 将string拷贝到b中，string会传为uin8的字符型
 	fmt.Println(n3, b)       // ~: 5 [97 98 99 100 101]
 
@@ -306,6 +323,8 @@ func main() {
 		map通过make函数创建，通过delete函数删除元素
 	*/
 
+	fmt.Println("===== map ====")
+
 	// 创建人的结构体
 	type Person struct {
 		Id   string // 身份证
@@ -316,7 +335,7 @@ func main() {
 	var persons map[string]Person
 	// > 创建map，第二个可选参数是map的存储能力
 	persons = make(map[string]Person)
-	persons = make(map[string]Person, 5) // 创建容量为10的map
+	persons = make(map[string]Person, 5) // 创建容量为5的map
 	// > 插入数据
 	persons["张三"] = Person{Id: "1", Name: "张三"}
 	persons["李四"] = Person{Id: "2", Name: "李四"}
