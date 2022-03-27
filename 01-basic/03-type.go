@@ -297,6 +297,41 @@ func main() {
 	var slice12 []byte
 	slice12 = append(slice12, "bar"...)
 	fmt.Println(slice12) // ~: [98 97 114]
+	// > 尽量保持切片的容量与长度相同，这样在第一次调用append方法时会拷贝底层数组到一个新数组，
+	// 避免对原底层数组的修改而影响其他基于该数组的切片
+	fmt.Println("切片的append修改原始数组，造成依赖原始数组的切片数据都变化")
+	var srcArray = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	intSlice := srcArray[2:4]
+	intSlice1 := srcArray[3:5]
+	fmt.Println("Before Append:")
+	fmt.Printf("  src array: %v\n", srcArray) // src array: [1 2 3 4 5 6 7 8 9 10]
+	fmt.Printf("  slice: %v, len: %d, cap: %d \n", intSlice,
+		len(intSlice), cap(intSlice)) // slice: [3 4], len: 2, cap: 8
+	fmt.Printf("  another slice: %v \n", intSlice1) // [4 5]
+	intSlice = append(intSlice, 11)
+	fmt.Println("After Append:")
+	fmt.Printf("  src array: %v\n", srcArray) // src array: [1 2 3 4 11 6 7 8 9 10]
+	fmt.Printf("  slice: %v, len: %d, cap: %d \n", intSlice,
+		len(intSlice), cap(intSlice)) //   slice: [3 4 11], len: 3, cap: 8
+	fmt.Printf("  another slice: %v \n", intSlice1) // 由于intSlice append后修改了底层数组，导致intSlice1数据变化： [4 11]
+	// 可以看到append修改了原数组的数据，所有基于原数组的切片都可能变化
+	// 现在，创建容量和长度相同的切片
+	fmt.Println("指定长度和容量相同的优势：")
+	srcArray = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	// 通过第三个索引值限制容量，长度 = 4 - 2 = 2，容量 = 4 - 2 = 2，长度和容量相同
+	intSlice = srcArray[2:4:4]
+	intSlice1 = srcArray[3:5]
+	fmt.Println("Before Append:")
+	fmt.Printf("  src array: %v\n", srcArray) // src array: [1 2 3 4 5 6 7 8 9 10]
+	fmt.Printf("  slice: %v, len: %d, cap: %d \n", intSlice,
+		len(intSlice), cap(intSlice)) // slice: [3 4], len: 2, cap: 2
+	fmt.Printf("  another slice: %v \n", intSlice1) // [4 5]
+	intSlice = append(intSlice, 11)
+	fmt.Println("After Append:")
+	fmt.Printf("  src array: %v\n", srcArray) //重新创建了一个数组，原数组不变： src array: [1 2 3 4 5 6 7 8 9 10]
+	fmt.Printf("  slice: %v, len: %d, cap: %d \n", intSlice,
+		len(intSlice), cap(intSlice)) // 切片元素少于1000，容量增长两倍，大于1000时，1.25被增长：slice: [3 4 11], len: 3, cap: 4
+	fmt.Printf("  another slice: %v \n", intSlice1) // 现在intSlice1数据无变化： [4 5]
 
 	// > 切片拷贝
 	// 使用copy方法将原切片src的元素拷贝到目标切片dst中，返回拷贝的元素个数。拷贝的数组切片必须属于同一类型，并且如果两个切片长度不一致，则按照
@@ -313,6 +348,8 @@ func main() {
 	var b = make([]byte, 5)  // 创建5个元素长度的byte类型切片
 	n3 := copy(b, "abcdefg") // 将string拷贝到b中，string会传为uin8的字符型
 	fmt.Println(n3, b)       // ~: 5 [97 98 99 100 101]
+
+	//
 
 	// ==============
 	// map
