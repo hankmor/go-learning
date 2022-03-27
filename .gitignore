@@ -21,3 +21,6 @@ bin
 out
 *.sum
 /02-web/data/
+
+
+pkg
