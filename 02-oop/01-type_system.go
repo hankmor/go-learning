@@ -3,12 +3,12 @@ package main
 import "fmt"
 
 // go语言的类型系统
-//空接口 interface {} 是go中的Any 类型，类似 Java 中的 Object
-//可以给任何类型（除了指针）添加方法
+// 空接口 interface {} 是go中的Any 类型，类似 Java 中的 Object
+// 可以给任何类型（除了指针）添加方法
 //
-//与java不同，在Go语言中没有隐藏的this指针，即：
-//1、方法的目标显示传递，通过 func 后边跟 (类型) 来附加，这也是与函数不同的地方
-//2、方法施加的目标（也就是“对象”）不需要非得是指针，也不用非得叫this
+// 与java不同，在Go语言中没有隐藏的this指针，即：
+// 1、方法的目标显示传递，通过 func 后边跟 (类型) 来附加，这也是与函数不同的地方
+// 2、方法施加的目标（也就是“对象”）不需要非得是指针，也不用非得叫this
 func main() {
 	fmt.Println("自定义类型")
 	var a Integer = 1
@@ -30,9 +30,6 @@ func main() {
 	arrayVal()
 	fmt.Println("===== 数组的引用传递 =====")
 	arrayRef()
-
-	fmt.Println("结构体")
-	structDemo()
 }
 
 func arrayVal() {
@@ -47,27 +44,6 @@ func arrayRef() {
 	var b = &a         // 将 a 的指针地址赋值给 b，不会拷贝数组
 	b[1]++             // go自动解引用为 (*b)[1]++
 	fmt.Println(a, *b) // [1 3 3] [1 3 3]
-}
-
-// Rect 定义结构体
-//Go中放弃了大量面向对象的特性，比如继承、多态、封装，只保留了组合
-type Rect struct {
-	x, y          float64
-	width, height float64
-}
-
-// Area 给 Rect 结构体增加计算面积的方法
-func (r *Rect) Area() float64 {
-	return r.width * r.height
-}
-
-func structDemo() {
-	rect := Rect{
-		width:  5,
-		height: 10,
-	}
-	area := rect.Area()
-	fmt.Println("area: ", area) // 50
 }
 
 // Integer 定义一个 Integer 类型，基础类型是 int 类型
