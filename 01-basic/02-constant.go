@@ -9,36 +9,42 @@ func main() {
 	// 常量声明
 	// ==============
 
-	// 不同于变量，常量声明过后，不被使用也不会编译错误
-
-	const Pi float64 = 3.14159265358979323846 // float64类型的敞亮
-	const zero = 0.0                          // 无类型浮点常量，可推导类型
-	fmt.Println("Pi=", Pi, "zero=", zero)     // ~: Pi= 3.141592653589793 zero= 0
-
-	// 同变量一样，支持同时定义多个常量
-	const (
-		size int64 = 1024 // 有类型整型常量
-		eof        = -1   // 无类型整型常量，可推导类型
-	)
-	fmt.Println("size=", size, "eof=", eof) // ~: size= 1024 eof= -1
-
-	const u, v float32 = 0, 3                                // 常量的多重赋值
-	const a, b, c = 3, 4, "foo"                              // 无类型整型和字符串常量
-	fmt.Println("u=", u, "v=", v, "a=", a, "b=", b, "c=", c) // ~: u= 0 v= 3 a= 3 b= 4 c= foo
-
-	// 常量也可以定义为编译器可运算的表达式，但是需要运行时才能确定的表达式不能定义为常量
-	const d = 1 << 3
-	fmt.Println("d=", d)
-	// const e = os.Getenv("GOROOT") // os.Getenv运行时才能确定其值，编译错误：const initializer os.Getenv("GOROOT") is not a constant
+	declareConst()
 
 	// ==============
 	// 预定义常量
 	// ==============
 
+	predefinedConst()
+
+	// ==============
+	// 枚举
+	// ==============
+
+	fakeEnum()
+}
+
+func fakeEnum() {
+	// go语言没有enum关键字，可以通过const圆括号的方式定义枚举值
+	const (
+		Sunday = iota
+		Monday
+		Tuesday
+		Wednesday
+		Thursday
+		Friday
+		Saturday
+		numberOfDays = 7 // 小写开头的变量没有导出，其他包看不到
+	)
+	fmt.Println("Sunday=", Sunday, "Monday=", Monday, "Tuesday=", Tuesday, "Wednesday=", Wednesday, "Thursday=", Thursday, "Friday=", Friday, "Saturday=", Saturday, "numberOfDays=", numberOfDays)
+	// ~: Sunday= 0 Monday= 1 Tuesday= 2 Wednesday= 3 Thursday= 4 Friday= 5 Saturday= 6 numberOfDays= 7
+}
+
+func predefinedConst() {
 	// go预定义了几个常量：true、false、iota
 	// iota用在使用括号()同时定义多个常量时
 	// iota表示可被编译器修改的常量
-	// iota在const关键字出现时置为0，在下一次const出现之前没出现一次自动增加1
+	// iota在const关键字出现时置为0，在下一次const出现之前每出现一次自动增加1
 	const ( // iota被重置为0
 		c0 = iota // iota为0
 		c1 = iota // 1, iota自动增加1
@@ -73,22 +79,28 @@ func main() {
 		c14
 	)
 	fmt.Println("c12=", c12, "c13=", c13, "c14=", c14) // ~: c12= 1 c13= 2 c14= 4
+}
 
-	// ==============
-	// 枚举
-	// ==============
+func declareConst() {
+	// 不同于变量，常量声明过后，不被使用也不会编译错误
 
-	// go语言没有enum关键字，可以通过const圆括号的方式定义枚举值
+	const Pi float64 = 3.14159265358979323846 // float64类型的敞亮
+	const zero = 0.0                          // 无类型浮点常量，可推导类型
+	fmt.Println("Pi=", Pi, "zero=", zero)     // ~: Pi= 3.141592653589793 zero= 0
+
+	// 同变量一样，支持同时定义多个常量
 	const (
-		Sunday = iota
-		Monday
-		Tuesday
-		Wednesday
-		Thursday
-		Friday
-		Saturday
-		numberOfDays = 7 // 小写开头的变量没有导出，其他包看不到
+		size int64 = 1024 // 有类型整型常量
+		eof        = -1   // 无类型整型常量，可推导类型
 	)
-	fmt.Println("Sunday=", Sunday, "Monday=", Monday, "Tuesday=", Tuesday, "Wednesday=", Wednesday, "Thursday=", Thursday, "Friday=", Friday, "Saturday=", Saturday, "numberOfDays=", numberOfDays)
-	// ~: Sunday= 0 Monday= 1 Tuesday= 2 Wednesday= 3 Thursday= 4 Friday= 5 Saturday= 6 numberOfDays= 7
+	fmt.Println("size=", size, "eof=", eof) // ~: size= 1024 eof= -1
+
+	const u, v float32 = 0, 3                                // 常量的多重赋值
+	const a, b, c = 3, 4, "foo"                              // 无类型整型和字符串常量
+	fmt.Println("u=", u, "v=", v, "a=", a, "b=", b, "c=", c) // ~: u= 0 v= 3 a= 3 b= 4 c= foo
+
+	// 常量也可以定义为编译器可运算的表达式，但是需要运行时才能确定的表达式不能定义为常量
+	const d = 1 << 3
+	fmt.Println("d=", d)
+	// const e = os.Getenv("GOROOT") // os.Getenv运行时才能确定其值，编译错误：const initializer os.Getenv("GOROOT") is not a constant
 }
