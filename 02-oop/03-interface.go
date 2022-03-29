@@ -76,4 +76,40 @@ func main() {
 	// 接口查询
 	closer, ok := file4.(ICloser)
 	fmt.Printf("%T, ok = %v \n", closer, ok) // *main.File, ok = true
+
+	// 类型查询，实例.(type) 可以查询实例的类型，只能用在switch语句中
+	switch t := file1.(type) {
+	case ICloser:
+		fmt.Printf("type is %T \n", t) // type is *main.File
+	case IReader:
+		fmt.Println("type is IReader")
+	case IWriter:
+		fmt.Println("type is IWriter")
+	}
+
+	// 类型查询示例
+	typeQuery(100, "helloGo", file2, new(Printer))
+	/*
+		arg 0 = 100, type is int
+		arg 1 = helloGo type is string
+		Read Not Implementation
+		arg 3 = 0xc000010230 type is *main.Printer
+	*/
+}
+
+func typeQuery(args ...interface{}) {
+	for idx, arg := range args {
+		switch t := arg.(type) {
+		case int:
+			fmt.Printf("arg %d = %v, type is int \n", idx, arg)
+		case string:
+			fmt.Printf("arg %d = %v type is string \n", idx, arg)
+		default:
+			if v, ok := arg.(IReader); ok {
+				v.Read(nil)
+			} else {
+				fmt.Printf("arg %d = %v type is %T \n", idx, arg, t)
+			}
+		}
+	}
 }
