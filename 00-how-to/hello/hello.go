@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./morestrings"
 	"fmt"
+	"go-learning-how-to/hello/morestrings"
 )
 
 func main() {
