@@ -12,10 +12,10 @@ import (
 const SavePath = "gowiki/wiki/"
 
 // 全局变量，一次解析模板，避免多次重复解析
-var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
+var templates = template.Must(template.ParseFiles("gowiki/edit.html", "gowiki/view.html"))
 
 // 正则表达式验证 url 输入
-var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
+var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9\\-_]+)$")
 
 func init() {
 	_, err := os.Stat(SavePath)
@@ -150,11 +150,13 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 			http.NotFound(w, r)
 			return
 		}
+		// m[2] 为 title
 		fn(w, r, m[2])
 	}
 }
 
 func main() {
+	// test
 	//p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
 	//err := p1.save()
 	//if err != nil {
@@ -164,9 +166,9 @@ func main() {
 	//fmt.Println(string(p2.Body))
 
 	// 访问页面时URL: /view/文件名
-	http.HandleFunc("/view/", viewHandler)
-	http.HandleFunc("/edit/", editHandler)
-	http.HandleFunc("/save/", saveHandler)
+	//http.HandleFunc("/view/", viewHandler)
+	//http.HandleFunc("/edit/", editHandler)
+	//http.HandleFunc("/save/", saveHandler)
 
 	// 使用闭包优化后，也可以使用匿名函数
 	//http.HandleFunc("/view/", func(w http.ResponseWriter, r *http.Request) {
@@ -178,9 +180,9 @@ func main() {
 	//	}
 	//	renderTemplate(w, "view", p)
 	//})
-	//http.HandleFunc("/view/", makeHandler(viewHandler1))
-	//http.HandleFunc("/edit/", makeHandler(editHandler1))
-	//http.HandleFunc("/save/", makeHandler(saveHandler1))
+	http.HandleFunc("/view/", makeHandler(viewHandler1))
+	http.HandleFunc("/edit/", makeHandler(editHandler1))
+	http.HandleFunc("/save/", makeHandler(saveHandler1))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
