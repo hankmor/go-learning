@@ -10,7 +10,22 @@ import "fmt"
 // 1、方法的目标显示传递，通过 func 后边跟 (类型) 来附加，这也是与函数不同的地方
 // 2、方法施加的目标（也就是“对象”）不需要非得是指针，也不用非得叫this
 func main() {
-	fmt.Println("自定义类型")
+	fmt.Println("===== 获取类型 =====")
+	printType(1)
+	printType("abc")
+	printType(3.1415)
+	printType([10]int{})
+	printType([]int{})
+	var m map[string]int
+	printType(m)
+	type t struct {
+	}
+	var t1 t
+	printType(t1)
+	var t2 = func() {}
+	printType(t2)
+
+	fmt.Println("===== 自定义类型 =====")
 	var a Integer = 1
 	var b Integer = 10
 	fmt.Println(a.less(b))  // true
@@ -30,6 +45,19 @@ func main() {
 	arrayVal()
 	fmt.Println("===== 数组的引用传递 =====")
 	arrayRef()
+}
+
+func printType(t any) {
+	switch v := t.(type) {
+	case int:
+		fmt.Printf("type: %T, value: %v\n", v, v)
+	case string:
+		fmt.Printf("type: %T, value: %s\n", v, v)
+	case float64:
+		fmt.Printf("type: %T, value: %v \n", v, v)
+	default:
+		fmt.Printf("type: %T, value: %v \n", v, v)
+	}
 }
 
 func arrayVal() {
