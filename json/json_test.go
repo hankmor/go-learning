@@ -54,6 +54,21 @@ func TestToJsonNoType(t *testing.T) {
 
 	// map[string]interface {}， map[Age:6 Name:Wednesday Parents:[Gomez Morticia]]
 }
+
+func TestJson(t *testing.T) {
+	type FamilyMember struct {
+		Name    string
+		Age     int
+		Parents *[]string
+		// Parents []string
+	}
+
+	b := []byte(`{"Name":"Wednesday","Age":6,"Parents":["Gomez","Morticia"]}`)
+	var m FamilyMember
+	_ = json.Unmarshal(b, &m)
+	fmt.Printf("%v\n", m)
+}
+
 func TestToJSON(t *testing.T) {
 	s, _ := json.Marshal(&T{Name: Name{First: "Janet", Last: "Prichard"}, Age: 47, Pi: 3.1415926, Date: time.Now()})
 	fmt.Println(string(s))
