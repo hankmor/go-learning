@@ -1,8 +1,8 @@
 package howto
 
 import (
-	"./morestrings"
 	"fmt"
+	"github.com/koobyte/go-learning/howto/morestrings"
 )
 
 func Run() {
