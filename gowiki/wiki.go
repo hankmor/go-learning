@@ -1,4 +1,4 @@
-package main
+package gowiki
 
 import (
 	"errors"
@@ -89,15 +89,15 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 // 渲染模板
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 	// 性能低，每次都要解析模板
-	//t, err := template.ParseFiles(tmpl + ".html")
-	//if err != nil {
+	// t, err := template.ParseFiles(tmpl + ".html")
+	// if err != nil {
 	//	http.Error(w, err.Error(), http.StatusInternalServerError)
 	//	return
-	//}
-	//err = t.Execute(w, p)
-	//if err != nil {
+	// }
+	// err = t.Execute(w, p)
+	// if err != nil {
 	//	http.Error(w, err.Error(), http.StatusInternalServerError)
-	//}
+	// }
 	err := templates.ExecuteTemplate(w, tmpl+".html", p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -155,23 +155,23 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 	}
 }
 
-func main() {
+func Run() {
 	// test
-	//p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
-	//err := p1.save()
-	//if err != nil {
+	// p1 := &Page{Title: "TestPage", Body: []byte("This is a sample Page.")}
+	// err := p1.save()
+	// if err != nil {
 	//	return
-	//}
-	//p2, _ := loadPage("TestPage")
-	//fmt.Println(string(p2.Body))
+	// }
+	// p2, _ := loadPage("TestPage")
+	// fmt.Println(string(p2.Body))
 
 	// 访问页面时URL: /view/文件名
-	//http.HandleFunc("/view/", viewHandler)
-	//http.HandleFunc("/edit/", editHandler)
-	//http.HandleFunc("/save/", saveHandler)
+	// http.HandleFunc("/view/", viewHandler)
+	// http.HandleFunc("/edit/", editHandler)
+	// http.HandleFunc("/save/", saveHandler)
 
 	// 使用闭包优化后，也可以使用匿名函数
-	//http.HandleFunc("/view/", func(w http.ResponseWriter, r *http.Request) {
+	// http.HandleFunc("/view/", func(w http.ResponseWriter, r *http.Request) {
 	//	title, _ := getTitle(w, r)
 	//	p, err := loadPage(title)
 	//	if err != nil {
@@ -179,7 +179,7 @@ func main() {
 	//		return
 	//	}
 	//	renderTemplate(w, "view", p)
-	//})
+	// })
 	http.HandleFunc("/view/", makeHandler(viewHandler1))
 	http.HandleFunc("/edit/", makeHandler(editHandler1))
 	http.HandleFunc("/save/", makeHandler(saveHandler1))

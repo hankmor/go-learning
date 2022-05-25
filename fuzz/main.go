@@ -1,4 +1,4 @@
-package main
+package fuzz
 
 import (
 	"errors"
@@ -11,7 +11,7 @@ func Reverse(s string) (string, error) {
 	if !utf8.ValidString(s) {
 		return s, errors.New("input is not valid UTF-8")
 	}
-	//bs := []byte(s) // 只能处理英文字符，中文字符乱码
+	// bs := []byte(s) // 只能处理英文字符，中文字符乱码
 	bs := []rune(s) // 改为rune类型，可以处理单个字符
 	for i, j := 0, len(bs)-1; i < len(bs)/2; i, j = i+1, j-1 {
 		bs[i], bs[j] = bs[j], bs[i]
@@ -19,7 +19,7 @@ func Reverse(s string) (string, error) {
 	return string(bs), nil
 }
 
-func main() {
+func Run() {
 	input := "The quick brown fox jumped over the lazy dog"
 	rev, _ := Reverse(input)
 	doubleRev, _ := Reverse(rev)
