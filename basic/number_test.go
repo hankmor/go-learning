@@ -1,6 +1,7 @@
 package basic
 
 import (
+	"encoding/hex"
 	"fmt"
 	"math/rand"
 	"testing"
@@ -17,6 +18,10 @@ func Test1(t *testing.T) {
 	fmt.Printf("%v\n", bs)
 	i = BytesToInt(bs)
 	fmt.Printf("%v\n", i)
+
+	fmt.Printf("%x\n", []byte("100"))
+	toString := hex.EncodeToString([]byte("17"))
+	println(toString)
 }
 
 func TestTruncateHigh(t *testing.T) {
@@ -29,10 +34,25 @@ func TestTruncateHigh(t *testing.T) {
 }
 
 func TestRemainLow(t *testing.T) {
-	src := rand.Int63n(time.Now().UnixMilli())
+	// src := rand.Int63n(time.Now().UnixMilli())
+	src := time.Now().UnixMilli()
 	println(src)
-	i := TruncateHigh(src)
-	println(i)
-	i = RemainLow(src, 18)
-	println(i)
+	// i := TruncateHigh(src)
+	// println(i)
+	// i = RemainLow(src, 18)
+	// println(i)
+	time.Sleep(time.Second)
+	src = time.Now().UnixMilli()
+	println(src)
+	time.Sleep(time.Second)
+	src = time.Now().UnixMilli()
+	println(src)
+
+	time.Sleep(time.Minute)
+	src = time.Now().UnixMilli()
+	println(src)
+
+	time.Sleep(time.Minute)
+	src = time.Now().UnixMilli()
+	println(src)
 }
