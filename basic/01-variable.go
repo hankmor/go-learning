@@ -38,14 +38,14 @@ func varDeclaration() {
 
 	// 可以将多个变量合并声明
 	var (
-		v3 [2]int                 // 数组
-		v4 []int                  // 数组切片
-		v5 struct{ i int }        // 结构体
-		v6 *int                   // 指针
-		v7 map[string]int         // map
-		v8 func(a int, b int) int // 匿名函数
+		v3 [2]int          // 数组
+		v4 []int           // 数组切片
+		v5 struct{ i int } // 结构体
+		v6 *int            // 指针
+		v7 map[string]int  // map
+		// v8 func(a int, b int) int // 匿名函数
 	)
-	fmt.Println("v3=", v3, "v4=", v4, "v5=", v5, "v6=", v6, "v7=", v7, "v8=", v8)
+	fmt.Println("v3=", v3, "v4=", v4, "v5=", v5, "v6=", v6, "v7=", v7, "v8=")
 	// ~: v3=[0 0] v4=[] v5={0} v6=<nil> v7=map[] v8=<nil>
 }
 
