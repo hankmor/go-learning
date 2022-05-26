@@ -321,8 +321,8 @@ func stringType() {
 	fmt.Printf("Hello" + " " + "World!\n") // ~: Hello World!
 	// 其他类型不能直接与字符串相加，需要转为字符串
 	// fmt.Printf(100 + "Hello" + " " + "World!\n") // 编译错误: invalid operation: 100 + "Hello World!\n" (mismatched types untyped int and untyped string)
-	fmt.Printf(string(100) + "Hello" + " " + "World!\n") // ~: dHello World!
-	fmt.Printf("100" + "Hello" + " " + "World!\n")       // ~: 100Hello World!
+	fmt.Printf(fmt.Sprint(100) + "Hello" + " " + "World!\n") // ~: dHello World!
+	fmt.Printf("100" + "Hello" + " " + "World!\n")           // ~: 100Hello World!
 
 	// 字符串遍历
 	// go语言默认编码为UTF-8，每个中文占3个字节
