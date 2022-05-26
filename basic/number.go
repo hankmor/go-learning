@@ -3,12 +3,28 @@ package basic
 import (
 	"bytes"
 	"encoding/binary"
+	"math"
 )
 
 func TruncateHigh(i int64) int64 {
 	var r int64
 	for k := int64(10); k <= i; k *= 10 {
 		r = i % k
+	}
+	return r
+}
+
+func RemainLow(i int64, l int) int64 {
+	var r int64
+	top := int64(math.Pow10(l - 1))
+	if i <= top {
+		return i
+	}
+	for k := int64(10); k <= i; k *= 10 {
+		r = i % k
+		if k > top {
+			break
+		}
 	}
 	return r
 }

@@ -27,3 +27,12 @@ func TestTruncateHigh(t *testing.T) {
 	i := TruncateHigh(src)
 	println(i)
 }
+
+func TestRemainLow(t *testing.T) {
+	src := rand.Int63n(time.Now().UnixMilli())
+	println(src)
+	i := TruncateHigh(src)
+	println(i)
+	i = RemainLow(src, 18)
+	println(i)
+}
