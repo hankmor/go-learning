@@ -1,8 +1,8 @@
 package server
 
 import (
-	"gin-demo/web"
 	"github.com/gin-gonic/gin"
+	"github.com/huzhouv/go-learning/gin/web"
 )
 
 func Start() {
@@ -11,7 +11,7 @@ func Start() {
 
 	r := web.InitRouter()
 	// 按目录加载模板
-	r.LoadHTMLGlob("templates/**/*")
+	r.LoadHTMLGlob("gin/templates/**/*")
 	// 按文件加载模板
 	// r.LoadHTMLFiles("templates/index.html")
 

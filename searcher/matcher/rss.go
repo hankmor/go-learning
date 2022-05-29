@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/koobyte/go-learning/searcher/search"
+	"github.com/huzhouv/go-learning/searcher/search"
 	"io"
 	"log"
 	"net/http"
