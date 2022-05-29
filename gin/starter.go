@@ -1,7 +1,7 @@
 package gin
 
 import (
-	"github.com/koobyte/go-learning/gin/server"
+	"github.com/huzhouv/go-learning/gin/server"
 )
 
 func Run() {
