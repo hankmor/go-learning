@@ -1,6 +1,6 @@
 package main
 
-import "github.com/huzhouv/go-learning/gowiki"
+import "github.com/huzhouv/go-learning/goroutine"
 
 func main() {
 	// // 入门
@@ -16,9 +16,12 @@ func main() {
 	// // json处理
 	// json.Run()
 	// // gowiki应用
-	gowiki.Run()
+	// gowiki.Run()
 	// // rss搜索订阅应用
 	// searcher.Run()
 	// // gin框架示例
 	// gin.Run()
+
+	// 并发
+	goroutine.Run()
 }
