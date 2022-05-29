@@ -12,7 +12,7 @@ import (
 const SavePath = "gowiki/wiki/"
 
 // 全局变量，一次解析模板，避免多次重复解析
-var templates = template.Must(template.ParseFiles("gowiki/edit.html", "gowiki/view.html"))
+var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
 
 // 正则表达式验证 url 输入
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9\\-_]+)$")
