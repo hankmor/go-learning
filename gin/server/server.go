@@ -11,7 +11,7 @@ func Start() {
 
 	r := web.InitRouter()
 	// 按目录加载模板
-	r.LoadHTMLGlob("gin/templates/**/*")
+	r.LoadHTMLGlob("templates/**/*")
 	// 按文件加载模板
 	// r.LoadHTMLFiles("templates/index.html")
 
