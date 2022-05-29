@@ -1,6 +1,7 @@
 package fuzz
 
 import (
+	"github.com/huzhouv/go-learning/fuzz/main"
 	"testing"
 	"unicode/utf8"
 )
@@ -42,7 +43,7 @@ func TestReverse(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		r, _ := Reverse(c.in)
+		r, _ := main.Reverse(c.in)
 		if r != c.want {
 			t.Errorf("Reverse: %q, want: %q", r, c.want)
 		}
@@ -59,11 +60,11 @@ func FuzzReverse(f *testing.F) {
 	}
 	// 执行测试
 	f.Fuzz(func(t *testing.T, orig string) {
-		rev, rErr := Reverse(orig)
+		rev, rErr := main.Reverse(orig)
 		if rErr != nil {
 			return // 出错则跳过测试
 		}
-		doubleRev, drErr := Reverse(rev)
+		doubleRev, drErr := main.Reverse(rev)
 		if drErr != nil {
 			t.Skip() // 跳过
 		}
