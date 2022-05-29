@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-func showLetters() {
+func ShowLetters() {
 	// 设置给调度器分配的逻辑处理器的数量，这里设置为只有一个处理器执行
 	runtime.GOMAXPROCS(1)
 
