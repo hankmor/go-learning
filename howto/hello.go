@@ -2,7 +2,7 @@ package howto
 
 import (
 	"fmt"
-	"github.com/koobyte/go-learning/howto/morestrings"
+	"github.com/huzhouv/go-learning/howto/morestrings"
 )
 
 func Run() {

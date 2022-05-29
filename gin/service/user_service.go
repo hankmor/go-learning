@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"gin-demo/db"
+	"github.com/huzhouv/go-learning/gin/db"
 )
 
 type UserService struct {
