@@ -43,4 +43,10 @@ func main() {
 	d1 := time.Duration(60) * time.Second
 	d2 := time.Duration(1) * time.Minute
 	println(d1 - d2) // 0
+
+	tm1 := time.Now()
+	tm2 := time.Now().Add(24 * time.Hour)
+	println(tm2.Sub(tm1))
+	println(24 * time.Hour)
+	println(tm2.Sub(tm1) >= 24*time.Hour)
 }

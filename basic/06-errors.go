@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math/rand"
 )
 
 func ErrMain() {
@@ -13,18 +14,53 @@ func ErrMain() {
 			Error() string
 		}
 	*/
-	fmt.Println("error demo")
-	errorDemo()
+	// fmt.Println("error demo")
+	// errorDemo()
+	//
+	// // defer 可以保证在函数正常或异常返回时都能够执行，常用来清理资源
+	// fmt.Println("defer demo")
+	// err := deferDemo()
+	// if err != nil {
+	// 	log.Println("err:", err)
+	// }
+	//
+	// fmt.Println("panic and recover")
+	// panicAndRecover()
 
-	// defer 可以保证在函数正常或异常返回时都能够执行，常用来清理资源
-	fmt.Println("defer demo")
-	err := deferDemo()
-	if err != nil {
-		log.Println("err:", err)
+	println("====")
+	// var wg sync.WaitGroup
+	// wg.Add(10)
+	for i := 0; i < 10; i++ {
+		// makeErr()
+		// 不能捕获
+		// if err := recover(); err != nil {
+		// 	continue
+		// }
+
+		// 使用匿名函数执行
+		// go func() {
+		func() {
+			defer func() {
+				// wg.Done()
+				if err := recover(); err != nil {
+					fmt.Printf("error: %v\n", err)
+				}
+			}()
+			makeErr()
+		}()
 	}
+	// wg.Wait()
+}
 
-	fmt.Println("panic and recover")
-	panicAndRecover()
+func makeErr() {
+	switch rand.Intn(3) {
+	case 0:
+		panic("zero...")
+	case 1:
+		println("number is 1")
+	case 2:
+		println("number is 2")
+	}
 }
 
 // GO语言引入了 panic() 和 recover() 两个函数来报告和处理运行时错误
