@@ -9,23 +9,52 @@ func FuncMain() {
 	// 函数定义
 	// ==============
 
+	println("==== 函数定义 ====")
+
 	// ==============
 	// 函数调用
 	// ==============
+
+	println("==== 函数调用 ====")
+	tp := f()
+	println(tp)
+	// 大括号分组
+	{
+		println("b")
+		println("c")
+	}
+	println("d")
 
 	// ==============
 	// 不定参数
 	// ==============
 
+	println("==== 不定参数 ====")
+
 	// ==============
 	// 多重返回值
 	// ==============
+
+	println("==== 多返回值 ====")
 
 	// ==============
 	// 匿名函数与闭包
 	// ==============
 
 	closure()
+}
+
+type Tp struct {
+	Name string
+	Age  int
+}
+
+func f() *Tp {
+	println("a")
+	return &Tp{
+		Name: "huzhou",
+		Age:  20,
+	}
 }
 
 func closure() {
