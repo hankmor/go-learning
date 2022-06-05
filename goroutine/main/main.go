@@ -25,5 +25,9 @@ func main() {
 	// goroutine.Countn()
 	// goroutine.SyncCountn()
 	// goroutine.AtomicCountn()
-	goroutine.BreakFor()
+	// goroutine.BreakFor()
+
+	println("===== chan =====")
+	// goroutine.PingPong()
+	goroutine.Runner()
 }
