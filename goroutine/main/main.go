@@ -29,5 +29,6 @@ func main() {
 
 	println("===== chan =====")
 	// goroutine.PingPong()
-	goroutine.Runner()
+	// goroutine.Runner()
+	goroutine.MultiWork()
 }
