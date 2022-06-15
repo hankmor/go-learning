@@ -141,4 +141,15 @@ func structIntrospection() {
 	} else {
 		println("not a struct")
 	}
+
+	println("invalid tag")
+	type cat struct {
+		Name string
+		Type int `json:"type" id:"100"`
+		// Type int `json: "type" id:"100"` // 标签多了一个空格，不能正常解析，导致输出空字符串
+	}
+	typeOfCat := reflect.TypeOf(cat{})
+	if catType, ok := typeOfCat.FieldByName("Type"); ok {
+		fmt.Println(catType.Tag.Get("json"))
+	}
 }
