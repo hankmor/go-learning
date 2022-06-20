@@ -1,6 +1,9 @@
 package main
 
-import "github.com/huzhouv/go-learning/goroutine"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 	// println("===== showLetters =====")
@@ -30,5 +33,20 @@ func main() {
 	println("===== chan =====")
 	// goroutine.PingPong()
 	// goroutine.Runner()
-	goroutine.MultiWork()
+	// goroutine.MultiWork()
+
+	println("======")
+
+	// 使用 select 实现随机向channel写入0、1
+	ch := make(chan int, 1)
+	for {
+		select {
+		case ch <- 0:
+			time.Sleep(time.Second)
+		case ch <- 1:
+			time.Sleep(time.Second)
+		}
+		i := <-ch
+		fmt.Println("Value received:", i)
+	}
 }
