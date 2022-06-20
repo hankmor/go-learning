@@ -1,4 +1,4 @@
-package myrpc
+package _go
 
 type Param struct { // 请求参数，两个整数
 	A, B int

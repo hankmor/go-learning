@@ -1,0 +1,26 @@
+syntax = "proto3"; // 使用 proto3 版本，必须为第一个非注释行
+
+option go_package = ".;protoes";
+
+// 定义服务
+service Arith {
+  rpc Multiply (Param) returns (Int){} // 返回类型也必须是 message
+  rpc Divide (Param) returns (Quotient){}
+}
+
+// 客户端发送给服务端
+message Param {
+  int32 A = 1; // 每一个message的字段都有一个唯一编号，用以区分消息二进制格式，而且不能更改
+  int32 B = 2;
+}
+
+// 服务端返回给客户端
+message Int {
+  int32 ret = 1;
+}
+
+// 服务端返回给客户端
+message Quotient {
+  int32 Quo = 1;
+  int32 Rem = 2;
+}
