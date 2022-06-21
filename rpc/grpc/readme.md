@@ -33,6 +33,12 @@ protoc --go_out=. --go_opt=paths=source_relative \
     arith.proto
 ```
 
-4. server 代码
+可以看到生成了两个文件：`arith.pb.go`、`arith_grpc.pb.go`，前者定义了客户端、服务端之间的通信消息，也就是参数和响应，后者定义了客户端和服务端对象以及它们之间的调用
 
-5. client 代码
+4. 编写 server 代码
+
+server代码需要开启服务，并实现.proto文件定义的接口
+
+5. 编写 client 代码
+
+client 连接 server，并调用server的方法，获得结果
