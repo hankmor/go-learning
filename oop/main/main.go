@@ -1,9 +1,13 @@
 package main
 
+import "github.com/huzhouv/go-learning/oop"
+
 func main() {
-	m := new(M)
-	(&Sub{M: m.m1()}).s1()
+	// m := new(M)
+	// (&Sub{M: m.m1()}).s1()
 	// oop.Run()
+
+	oop.Trap()
 }
 
 type Sub struct {
