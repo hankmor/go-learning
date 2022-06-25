@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"fmt"
@@ -37,4 +37,8 @@ out:
 		fmt.Printf("%s: %d\n", prefix, i)
 	}
 	fmt.Printf("%s completed\n", prefix)
+}
+
+func main() {
+	PrintPrimeNumber()
 }

@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"sync"
@@ -41,4 +41,8 @@ func Run(baton chan int8) {
 
 	println("runner ", runner, " exchange the baton to next runner ", nextRunner)
 	baton <- nextRunner // 交接
+}
+
+func main() {
+	Runner()
 }

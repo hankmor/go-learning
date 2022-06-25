@@ -1,11 +1,11 @@
-package basic
+package main
 
 import (
 	"fmt"
 	"math"
 )
 
-func TypeMain() {
+func main() {
 	/*
 		基础类型：
 		1、布尔类型：bool

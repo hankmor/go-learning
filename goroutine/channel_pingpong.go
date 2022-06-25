@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"math/rand"
@@ -44,4 +44,8 @@ func Player(name string, ppc chan int16) {
 		println(name, " hit ", ball) // 打印击球信息
 		ppc <- ball                  // 将球打给对方
 	}
+}
+
+func main() {
+	PingPong()
 }

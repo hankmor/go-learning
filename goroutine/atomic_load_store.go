@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"fmt"
@@ -37,4 +37,8 @@ func DeadFor(name string) {
 			break
 		}
 	}
+}
+
+func main() {
+	BreakFor()
 }

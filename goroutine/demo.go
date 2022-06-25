@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"fmt"
@@ -38,4 +38,9 @@ func Demo1() {
 	}
 	wg.Wait()
 	println("finished")
+}
+
+func main() {
+	// Demo()
+	Demo1()
 }

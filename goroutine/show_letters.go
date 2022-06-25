@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"fmt"
@@ -50,4 +50,8 @@ func ShowLetters() {
 	wg.Wait()
 
 	println("Termination program")
+}
+
+func main() {
+	ShowLetters()
 }

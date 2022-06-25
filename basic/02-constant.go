@@ -1,10 +1,10 @@
-package basic
+package main
 
 import (
 	"fmt"
 )
 
-func ConstMain() {
+func main() {
 	// ==============
 	// 常量声明
 	// ==============

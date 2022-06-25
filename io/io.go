@@ -1,4 +1,4 @@
-package io
+package main
 
 import (
 	"bytes"
@@ -23,4 +23,8 @@ func ReadAndWrite() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func main() {
+	ReadAndWrite()
 }

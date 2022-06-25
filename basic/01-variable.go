@@ -1,11 +1,11 @@
-package basic
+package main
 
 import (
 	"fmt"
 )
 
 // 变量
-func VarMain() {
+func main() {
 	// ==============
 	// 变量声明
 	// ==============

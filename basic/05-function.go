@@ -1,10 +1,10 @@
-package basic
+package main
 
 import (
 	"fmt"
 )
 
-func FuncMain() {
+func main() {
 	// ==============
 	// 函数定义
 	// ==============

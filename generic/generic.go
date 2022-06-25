@@ -1,4 +1,4 @@
-package generic
+package main
 
 import "fmt"
 
@@ -45,7 +45,7 @@ func SumNumbers[K comparable, V Number](m map[K]V) V {
 	return s
 }
 
-func Run() {
+func main() {
 	ints := map[string]int64{
 		"one": 34,
 		"two": 10,

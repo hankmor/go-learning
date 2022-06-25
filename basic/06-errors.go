@@ -1,4 +1,4 @@
-package basic
+package main
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"math/rand"
 )
 
-func ErrMain() {
+func main() {
 	/*
 		Go 内置了 error 接口，如下：
 		type error interface {

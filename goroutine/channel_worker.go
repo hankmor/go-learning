@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"fmt"
@@ -53,4 +53,8 @@ func Work(wc chan string, worker int) {
 
 		fmt.Printf("Worker %d completed: %s\n", worker, task)
 	}
+}
+
+func main() {
+	MultiWork()
 }

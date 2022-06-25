@@ -1,4 +1,4 @@
-package goroutine
+package main
 
 import (
 	"fmt"
@@ -97,4 +97,11 @@ func AtomicCountn() {
 
 	sg.Wait()
 	fmt.Println("expected count: ", n*m, "actual count: ", count)
+}
+
+func main() {
+	Count()
+	Countn()
+	SyncCountn()
+	AtomicCountn()
 }
