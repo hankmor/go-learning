@@ -1,4 +1,4 @@
-package oop
+package main
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func ObjMain() {
+func main() {
 	fmt.Println("结构体")
 
 	// ===== 创建对象 =====

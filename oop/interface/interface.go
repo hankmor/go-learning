@@ -1,4 +1,4 @@
-package oop
+package main
 
 import "fmt"
 
@@ -49,7 +49,7 @@ func (file *File) Close() (err error) {
 	return nil
 }
 
-func InterfaceMain() {
+func main() {
 	var file *File = new(File)
 	fmt.Printf("%T \n", file)
 	file.Read(nil)

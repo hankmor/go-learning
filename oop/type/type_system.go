@@ -1,4 +1,4 @@
-package oop
+package main
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 // 1、方法的目标显示传递，通过 func 后边跟 (类型) 来附加，这也是与函数不同的地方
 // 2、方法施加的目标（也就是“对象”）不需要非得是指针，也不用非得叫this
 
-func TypeMain() {
+func main() {
 	// interface具体类型断言
 	var i interface{}
 	i = 10

@@ -1,4 +1,4 @@
-package oop
+package main
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 // debug改为false，异常：panic: runtime error: invalid memory address or nil pointer dereference
 const debug = false
 
-func Trap() {
+func main() {
 	test()
 }
 
