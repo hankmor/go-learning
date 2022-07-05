@@ -8,7 +8,10 @@ import (
 func main() {
 	// 当前时间
 	now := time.Now()
-	fmt.Printf("now: %v\n", now) // now: 2022-05-31 14:01:58.68345 +0800 CST m=+0.000064237
+	fmt.Printf("now: %v\n", now)                        // now: 2022-05-31 14:01:58.68345 +0800 CST m=+0.000064237
+	fmt.Printf("milli: %v\n", now.UnixMilli())          // 1657005579115
+	fmt.Printf("nanos: %v\n", now.UnixNano())           // 1657005579115184000
+	fmt.Printf("nanos: %v\n", now.UnixNano()/1000%1000) // 1657005579115184000
 
 	// 计算
 
