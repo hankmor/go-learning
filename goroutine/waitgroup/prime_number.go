@@ -8,7 +8,7 @@ import (
 
 var wg sync.WaitGroup
 
-// PrintPrimeNumber 打印 5000 以内的素数，耗时的操作，观察多个 goroutine 切换的情况
+// PrintPrimeNumber 打印 5000 以内的素数，耗时的操作，观察多个 basic 切换的情况
 func PrintPrimeNumber() {
 	runtime.GOMAXPROCS(1)
 

@@ -12,7 +12,7 @@ var (
 	sg1      sync.WaitGroup
 )
 
-// BreakFor 使用 atomic 包下的 LoadXxx 和 StoreXxx 方法来同步，LoadXxx 和 StoreXxx 不能被不同的 goroutine 同时执行
+// BreakFor 使用 atomic 包下的 LoadXxx 和 StoreXxx 方法来同步，LoadXxx 和 StoreXxx 不能被不同的 basic 同时执行
 func BreakFor() {
 	sg1.Add(2)
 

@@ -14,7 +14,7 @@ var (
 
 func Countn() {
 	/*
-		n 个 goroutine，每个对 count 加 m 次，结果应该为 n * m，而实际上是小于这个值
+		n 个 basic，每个对 count 加 m 次，结果应该为 n * m，而实际上是小于这个值
 	*/
 
 	var n = 1000
@@ -49,7 +49,7 @@ func IncErr() {
 	defer sg.Done()
 	for i := 0; i < 2; i++ {
 		value := count    // 赋值到临时变量
-		runtime.Gosched() // 当前 goroutine 从线程退出，并放回到队列，切换 gorountine 是的竞态条件更明显
+		runtime.Gosched() // 当前 basic 从线程退出，并放回到队列，切换 gorountine 是的竞态条件更明显
 		value++           // 临时变量加1
 		count = value     // 赋值给count
 	}

@@ -16,10 +16,10 @@ func Run(key string) {
 		log.Fatal("Parse json file error: ", err)
 	}
 
-	// 创建结果通道，启动 goroutine 后将其传入并接收搜索结果
+	// 创建结果通道，启动 basic 后将其传入并接收搜索结果
 	results := make(chan *Result)
 
-	// WaitGroup 是一个信号量，当 goroutine 并行执行时通过它来计数
+	// WaitGroup 是一个信号量，当 basic 并行执行时通过它来计数
 	// WaitGroup.wait 方法阻塞，知道计数器减为0
 	// 每完成一个并行任务需要调用WaitGroup.Done方法是计数器减1
 	var waitGroup sync.WaitGroup

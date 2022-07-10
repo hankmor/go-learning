@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/huzhouv/go-learning/util"
 	"time"
 )
 
 func main() {
+	// 测试\r，看到world覆盖了长度与其相等的hello: worldabcd
+	// fmt.Printf("helloabcd\rworld\n")
 	// 主程序未退出，则一直展示旋转动画
-	go spinner(100 * time.Millisecond)
+	go util.Spinner()
 	n := 6
 	i := fib(n)
 	fmt.Printf("fib %d = %d\n", n, i)
@@ -25,7 +28,7 @@ func fib(n int) int {
 func spinner(delay time.Duration) {
 	for {
 		for _, r := range `-\|/` {
-			fmt.Printf("\r%c", r)
+			fmt.Printf("\r%c", r) // \r 回车符，每次覆盖上一次的内容
 			time.Sleep(delay)
 		}
 	}
