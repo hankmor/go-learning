@@ -30,9 +30,7 @@ func Demo1() {
 		ni := i // 拷贝到新的变量中
 		go func() {
 			defer wg.Done()
-			// 睡眠1s
 			time.Sleep(time.Second)
-			// 全部输出的i为10
 			fmt.Printf("success: %d\n", ni)
 		}()
 	}
@@ -41,6 +39,6 @@ func Demo1() {
 }
 
 func main() {
-	// Demo()
-	Demo1()
+	Demo()
+	// Demo1()
 }
