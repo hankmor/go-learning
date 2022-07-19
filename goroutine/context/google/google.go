@@ -2,8 +2,8 @@ package google
 
 import (
 	"context"
+	"context-demo/userip"
 	"encoding/json"
-	"github.com/huzhouv/go-learning/goroutine/context/userip"
 	"net/http"
 )
 
@@ -17,7 +17,12 @@ type Result struct {
 
 func Search(ctx context.Context, query string) (Results, error) {
 	// Prepare the Google Search API request.
-	req, err := http.NewRequest("GET", "https://ajax.googleapis.com/ajax/services/search/web?v=1.0", nil)
+	// google 自定义搜索 api
+
+	// https://www.googleapis.com/customsearch/v1?key=AIzaSyDDc33B_3zWY3wRtPNS-8ikt0MD1Dl5Tis&cx=053d09c819fa04043&q=golang
+	key := "AIzaSyDDc33B_3zWY3wRtPNS-8ikt0MD1Dl5Tis"
+	req, err := http.NewRequest("GET", "https://www.googleapis.com/customsearch/v1?key="+key+"&cx=053d09c819fa04043", nil)
+	// req, err := http.NewRequest("GET", "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&key="+key+"&cx=053d09c819fa04043", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -41,18 +46,16 @@ func Search(ctx context.Context, query string) (Results, error) {
 		// Parse the JSON search result.
 		// https://developers.google.com/web-search/docs/#fonje
 		var data struct {
-			ResponseData struct {
-				Results []struct {
-					TitleNoFormatting string
-					URL               string
-				}
-			}
+			Results []struct {
+				Title string `json:"title"`
+				Link  string `json:"link"`
+			} `json:"items"`
 		}
 		if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
 			return err
 		}
-		for _, res := range data.ResponseData.Results {
-			results = append(results, Result{Title: res.TitleNoFormatting, URL: res.URL})
+		for _, res := range data.Results {
+			results = append(results, Result{Title: res.Title, URL: res.Link})
 		}
 		return nil
 	})
@@ -64,15 +67,15 @@ func Search(ctx context.Context, query string) (Results, error) {
 func httpDo(ctx context.Context, req *http.Request, f func(*http.Response, error) error) error {
 	// Run the HTTP request in a goroutine and pass the response to f.
 	c := make(chan error, 1)
-	req = req.WithContext(ctx)
-	go func() {
-		c <- f(http.DefaultClient.Do(req))
+	req = req.WithContext(ctx) // 赋值一个request，使用新的context
+	go func() {                // 开启单独的goroutine执行f方法
+		c <- f(http.DefaultClient.Do(req)) // 执行查询，将结果传递给f方法
 	}()
 	select {
-	case <-ctx.Done():
-		<-c // Wait for f to return.
-		return ctx.Err()
-	case err := <-c:
+	case <-ctx.Done(): // 表示请求被取消或超时
+		<-c              // Wait for f to return.
+		return ctx.Err() // 返回取消原因，或者超时说明
+	case err := <-c: // f成功执行,err 为nil，或者 f 执行返回了 error
 		return err
 	}
 }

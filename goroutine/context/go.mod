@@ -1,3 +1,3 @@
-module github.com/huzhouv/go-learning/goroutine/context
+module context-demo
 
 go 1.18

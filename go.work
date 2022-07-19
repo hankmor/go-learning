@@ -4,3 +4,5 @@ go 1.18
 
 // 本地能够直接使用util模块
 use ./util
+use ./gowiki
+use ./goroutine/context
