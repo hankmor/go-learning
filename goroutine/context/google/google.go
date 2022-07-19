@@ -67,7 +67,7 @@ func Search(ctx context.Context, query string) (Results, error) {
 func httpDo(ctx context.Context, req *http.Request, f func(*http.Response, error) error) error {
 	// Run the HTTP request in a goroutine and pass the response to f.
 	c := make(chan error, 1)
-	req = req.WithContext(ctx) // 赋值一个request，使用新的context
+	req = req.WithContext(ctx) // 拷贝一个request，使用新的context
 	go func() {                // 开启单独的goroutine执行f方法
 		c <- f(http.DefaultClient.Do(req)) // 执行查询，将结果传递给f方法
 	}()
