@@ -12,6 +12,7 @@ func main() {
 		panic(err)
 	}
 	var ret int
+	// 调用rpc方法，方法名称为 类型.方法名
 	err = client.Call("Arith.Multiply", &myrpc.Param{10, 2}, &ret) // 同步调用远程方法
 	if err != nil {
 		panic(err)
