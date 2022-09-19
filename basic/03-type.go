@@ -243,7 +243,27 @@ func sliceType() {
 	n3 := copy(b, "abcdefg") // 将string拷贝到b中，string会传为uin8的字符型
 	fmt.Println(n3, b)       // ~: 5 [97 98 99 100 101]
 
-	//
+	// 切片参数传递：切片是引用传递，修改指定下标的值会影响原有切片
+	is := []int{1, 2, 3} //
+	// is := make([]int, 10, 10)
+	// a = [...]int{0, 1, 2, 3, 4, 5, 6, 7} // 数组
+	// is := a[0:4:4]
+	fmt.Println("before modify slice:", is) // [1 2 3]
+	fmt.Println("cap:", cap(is), "len:", len(is))
+	modifySlice(is)
+	fmt.Println("after modify slice:", is) // [10 2 3]
+	fmt.Println("cap:", cap(is), "len:", len(is))
+	appendToSlice(is)
+	fmt.Println("after append to slice:", is) // [10 2 3]
+	fmt.Println("cap:", cap(is), "len:", len(is))
+}
+
+func modifySlice(is []int) {
+	is[0] = 10 // 引用传递，会影响原有slice
+}
+func appendToSlice(is []int) {
+	is = append(is, 11) // append 后产生一个新的 slice，不会影响原来的
+	is[0] = 20          // 修改新的slice，不影响原有的
 }
 
 func arrayType() {
