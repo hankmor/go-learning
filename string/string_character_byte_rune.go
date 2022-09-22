@@ -22,13 +22,38 @@ func main() {
 
 	fmt.Println("\n================")
 	printSpecialString()
+
+	fmt.Println("\n================")
+	printCodePoint()
+}
+
+// 输出 unicode 码点和byte序列的关系
+func printCodePoint() {
+	const nihongo = "日本語"
+	fmt.Println(len(nihongo)) // 9
+
+	// 使用 for range 时，go 可以将字节序列解码为 UTF-8 的 rune
+	for index, runeValue := range nihongo {
+		fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+	}
+	// Output:
+	// U+65E5 '日' starts at byte position 0
+	// U+672C '本' starts at byte position 3
+	// U+8A9E '語' starts at byte position 6
 }
 
 func printSpecialString() {
+	const s = '⌘' // 单个字节的 char，其实是一个 rune
+
+	fmt.Printf("%x\n", s) // 十六进制格式：0x2318
+	fmt.Printf("%T\n", s) // 类型是 int32, 也就是 rune
+
 	const placeOfInterest = `⌘`
 
 	fmt.Printf("plain string: ")
-	fmt.Printf("%s", placeOfInterest) // ⌘
+	fmt.Printf("%s\n", placeOfInterest) // ⌘
+	fmt.Printf("%x\n", placeOfInterest) // 十六进制格式：e28c98
+	fmt.Printf("%T", placeOfInterest)   // 类型是 string
 	fmt.Printf("\n")
 
 	fmt.Printf("quoted string: ")
