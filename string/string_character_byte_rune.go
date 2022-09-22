@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"unicode/utf8"
+)
 
 // go中的字符串、字节、字符 character 和符文 rune 的区别
 // demo code from: https://go.dev/blog/strings
@@ -25,6 +28,40 @@ func main() {
 
 	fmt.Println("\n================")
 	printCodePoint()
+	printCodePointWithUtf8()
+}
+
+func printCodePointWithUtf8() {
+	const nihongo = "日本語"
+	fmt.Println(len(nihongo)) // 9
+
+	// 不使用 for...range 语句，而是用utf8包来解码rune
+	for i, j := 0, 0; i < len(nihongo); i += j {
+		// 将字符串解码为一个 rune，返回解码后的 rune 以及用到的字节宽度
+		runeValue, index := utf8.DecodeRuneInString(nihongo[i:])
+		fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+		j = index
+	}
+	// Output:
+	// U+65E5 '日' starts at byte position 3
+	// U+672C '本' starts at byte position 3
+	// U+8A9E '語' starts at byte position 3
+
+	const nihongo1 = "日本\xbc語"
+	fmt.Println(len(nihongo1)) // 10
+
+	// 不使用 for...range 语句，而是用utf8包来解码rune
+	for i, j := 0, 0; i < len(nihongo1); i += j {
+		// 将字符串解码为一个 rune，返回解码后的 rune 以及用到的字节宽度
+		runeValue, index := utf8.DecodeRuneInString(nihongo1[i:])
+		fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+		j = index
+	}
+	// Output:
+	// U+65E5 '日' starts at byte position 3
+	// U+672C '本' starts at byte position 3
+	// U+FFFD '�' starts at byte position 1
+	// U+8A9E '語' starts at byte position 3
 }
 
 // 输出 unicode 码点和byte序列的关系
@@ -40,6 +77,22 @@ func printCodePoint() {
 	// U+65E5 '日' starts at byte position 0
 	// U+672C '本' starts at byte position 3
 	// U+8A9E '語' starts at byte position 6
+
+	// const nihongo1 = "日本😄語"
+	const nihongo1 = "日本\xbd語"
+	// invalid utf8 字符串
+	fmt.Println(utf8.ValidString("\xbd")) // false
+	fmt.Println(len(nihongo1))            // 10
+
+	// 使用 for range 时，go 可以将字节序列解码为 UTF-8 的 rune
+	for index, runeValue := range nihongo1 {
+		fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+	}
+	// Output:
+	// U+65E5 '日' starts at byte position 0
+	// U+672C '本' starts at byte position 3
+	// U+FFFD '�' starts at byte position 6
+	// U+8A9E '語' starts at byte position 7
 }
 
 func printSpecialString() {
