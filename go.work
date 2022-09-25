@@ -9,4 +9,5 @@ use (
 	./goroutine/context
 	./rpc/go
 	./rpc/grpc
+	./fuzz
 )
