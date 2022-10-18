@@ -52,4 +52,10 @@ func main() {
 	println(tm2.Sub(tm1))
 	println(24 * time.Hour)
 	println(tm2.Sub(tm1) >= 24*time.Hour)
+
+	fmt.Println()
+	dur := time.Hour
+	tm3 := time.Now()
+	fmt.Println(tm3.Add(dur))
+	fmt.Println(tm3.Add(-dur))
 }
