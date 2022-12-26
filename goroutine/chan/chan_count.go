@@ -11,8 +11,8 @@ var sg sync.WaitGroup
 func main() {
 	sg.Add(2)
 	ch := make(chan int)
-	go countAdd1(ch) // 增加
-	go func() {      // 读取
+	go countAdd(ch) // 增加
+	go func() {     // 读取
 		for v := range ch {
 			fmt.Println("received: ", v)
 		}
@@ -21,7 +21,7 @@ func main() {
 	sg.Wait()
 }
 
-func countAdd1(ch chan<- int) {
+func countAdd(ch chan<- int) {
 	for i := 0; i < 1000; i++ {
 		cnt1++
 		ch <- cnt1 // 写回通道

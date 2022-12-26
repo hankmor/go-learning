@@ -6,6 +6,8 @@ import (
 	"sync"
 )
 
+// 使用加锁的方式保证并发的正确性
+
 var cnt = 0
 
 func countAdd(lock *sync.Mutex) {
