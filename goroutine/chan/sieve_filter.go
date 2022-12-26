@@ -31,7 +31,7 @@ func main() {
 		prime := <-ch // 获取基础，从 2 开始
 		fmt.Println("sieve: ", prime)
 		out := make(chan int)     // 用于接收已经筛选的素数
-		go Filter(ch, out, prime) // 筛选素数
-		ch = out                  // 已经筛选出来的通道 out 赋值为 ch，继续筛选
+		go Filter(ch, out, prime) // 筛选素数，prime 为基数，从 2 开始，将已经筛选的素数作为基数，如 2 3 5 7 ...，然后开启单独的goroutine不断筛掉该基数的倍数
+		ch = out                  // 已经筛选出来的通道 out 赋值为 ch，将通道的素数作为基数，继续筛选
 	}
 }
