@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/huzhouv/go-learning/util"
 	"time"
+
+	"github.com/huzhouv/go-learning/util"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
 	c = make(chan int)
 	// 主程序未退出，则一直展示旋转动画
 	go util.Spinner()
-	// 开启 basic 执行匿名函数
+	// 开启 goroutine 执行匿名函数
 	go func() {
 		// 休眠2s，然后从chan读取数据
 		time.Sleep(2 * time.Second)

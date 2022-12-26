@@ -16,13 +16,15 @@ func main() {
 	}()
 
 	go func() {
+		// 从 numbers 中读取数据，然后平方后再写入 squared
 		for v := range numbers {
 			squared <- v * v
 		}
 		close(squared) // 全部发送成功后关闭
 	}()
 
-	for v := range squared { // 循环读取通道的值
+	// 从 squared 通道读取值
+	for v := range squared {
 		fmt.Println(v)
 	}
 }

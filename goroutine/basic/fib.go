@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/huzhouv/go-learning/util"
 	"time"
+
+	"github.com/huzhouv/go-learning/util"
 )
 
 func main() {
