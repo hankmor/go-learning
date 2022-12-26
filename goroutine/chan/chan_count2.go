@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"time"
+	// "time"
 )
 
 func Count(ch chan<- int) {
 	ch <- 1
-	time.Sleep(100 * time.Millisecond)
+	// time.Sleep(100 * time.Millisecond)
 }
 
 func main() {
