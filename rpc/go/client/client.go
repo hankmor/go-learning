@@ -13,13 +13,13 @@ func main() {
 	}
 	var ret int
 	// 调用rpc方法，方法名称为 类型.方法名
-	err = client.Call("Arith.Multiply", &myrpc.Param{10, 2}, &ret) // 同步调用远程方法
+	err = client.Call("Arith.Multiply", &myrpc.Param{A: 10, B: 2}, &ret) // 同步调用远程方法
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Arith.Multiply: %d\n", ret)
 
-	divCall := client.Go("Arith.Divide", &myrpc.Param{10, 3}, new(myrpc.Quotient), nil) // 异步调用远程方法
+	divCall := client.Go("Arith.Divide", &myrpc.Param{A: 10, B: 3}, new(myrpc.Quotient), nil) // 异步调用远程方法
 	reply := <-divCall.Done
 	q := reply.Reply.(*myrpc.Quotient)
 	fmt.Printf("Arith.Divide: qua = %d, rem = %d\n", q.Quo, q.Rem)
