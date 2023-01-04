@@ -4,3 +4,5 @@
 
 * map：map练习题目
 * playground: Go playground 官方示例程序，见：https://go.dev/play/
+* scope: Go代码块的作用域
+* evaluate_order: 表达式的求值顺序
