@@ -1,3 +1,3 @@
-module github.com/huzhouv/go-learning/howto
+module howto
 
 go 1.18

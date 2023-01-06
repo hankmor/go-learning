@@ -1,4 +1,4 @@
-module github.com/huzhouv/go-learning/image
+module image
 
 go 1.18
 

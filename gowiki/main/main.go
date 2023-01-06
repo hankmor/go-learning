@@ -1,6 +1,6 @@
 package main
 
-import "github.com/huzhouv/go-learning/gowiki"
+import "gowiki"
 
 func main() {
 	gowiki.Run()

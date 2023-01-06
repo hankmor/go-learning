@@ -1,3 +1,3 @@
-module github.com/huzhouv/go-learning/util
+module util
 
 go 1.18

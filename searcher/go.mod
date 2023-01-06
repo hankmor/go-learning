@@ -1,3 +1,3 @@
-module github.com/huzhouv/go-learning/searcher
+module searcher
 
 go 1.18

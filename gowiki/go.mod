@@ -1,3 +1,3 @@
-module github.com/huzhouv/go-learning/gowiki
+module gowiki
 
 go 1.18

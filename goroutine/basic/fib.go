@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/huzhouv/go-learning/util"
+	"util"
 )
 
 func main() {

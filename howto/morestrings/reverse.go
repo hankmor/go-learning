@@ -8,7 +8,3 @@ func ReverseRunes(s string) string {
 	}
 	return string(rs)
 }
-
-func main() {
-
-}

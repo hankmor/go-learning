@@ -1,9 +1,9 @@
 package web
 
 import (
+	"gin/db"
+	"gin/service"
 	"github.com/gin-gonic/gin"
-	"github.com/huzhouv/go-learning/gin/db"
-	"github.com/huzhouv/go-learning/gin/service"
 	"net/http"
 	"strconv"
 )

@@ -1,3 +1,3 @@
-module github.com/huzhouv/go-learning/oop
+module oop
 
 go 1.18

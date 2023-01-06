@@ -4,11 +4,11 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/huzhouv/go-learning/searcher/search"
 	"io"
 	"log"
 	"net/http"
 	"regexp"
+	"searcher/search"
 )
 
 // 基于 rss 的匹配器，用于下载 rss 的 xml 然后搜索其中的 title 和 description 内容

@@ -3,11 +3,19 @@ go 1.18
 // 使用go worksapce模式，别的模块可以直接使用util包
 
 use (
+	.
 	// 本地能够直接使用util模块
 	./util
 	./gowiki
+	./howto
 	./goroutine/context
 	./rpc/go
 	./rpc/grpc
 	./fuzz
+	./gin
+	./image
+	./json
+	./log
+	./net
+	./searcher
 )

@@ -1,8 +1,8 @@
 package server
 
 import (
+	"gin/web"
 	"github.com/gin-gonic/gin"
-	"github.com/huzhouv/go-learning/gin/web"
 )
 
 func Start() {

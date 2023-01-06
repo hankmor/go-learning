@@ -1,4 +1,4 @@
-module github.com/huzhouv/go-learning/gin
+module gin
 
 go 1.18
 
