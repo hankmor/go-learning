@@ -9,7 +9,7 @@ import (
 // 数据提供者，通过读取并解析 data/data.json 文件类为 search 提供数据源信息
 
 // jsonFile 文件存储位置常量
-const jsonFile = "searcher/src/c02/data/data.json"
+const jsonFile = "data/data.json"
 
 // Feed 提供的数据结构
 type Feed struct {

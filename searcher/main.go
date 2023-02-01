@@ -1,4 +1,4 @@
-package searcher
+package main
 
 import (
 	_ "searcher/matcher"
@@ -10,4 +10,8 @@ import (
 
 func Run() {
 	search.Run("president")
+}
+
+func main() {
+	Run()
 }
