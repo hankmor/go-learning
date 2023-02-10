@@ -105,7 +105,7 @@ func writeFileByLogLvl() {
 	encoderConfig.EncodeTime = timeEncoder            // 指定时间格式
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	// encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder // 按级别显示不同颜色，不需要的话取值zapcore.CapitalLevelEncoder就可以了
-	// encoderConfig.EncodeCaller = zapcore.FullCallerEncoder       // 显示完整文件路径
+	encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder // 显示完整文件路径
 	encoder := zapcore.NewConsoleEncoder(encoderConfig)
 
 	// 日志级别
