@@ -5,10 +5,31 @@ import (
 	"time"
 )
 
+// 从 nil 的chan读写会阻塞，但是有时候却可以巧妙的使用它
+
 // 想要 2 个 goroutine 依次输出 2 3 后退出
 func main() {
+	// nilChan()
 	// bad()
 	betterWithNilChan()
+}
+
+func nilChan() {
+	var a chan int
+	go func() {
+		fmt.Println("write to a nil chan")
+		a <- 1
+		fmt.Println("write success")
+	}()
+	go func() {
+		fmt.Println("read from a nil chan")
+		<-a
+		fmt.Println("read success")
+	}()
+	select {} // 阻塞程序，不退出
+	/*
+	 fatal error: all goroutines are asleep - deadlock!
+	*/
 }
 
 func bad() {
