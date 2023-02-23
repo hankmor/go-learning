@@ -11,7 +11,25 @@ import (
 func main() {
 	// nilChan()
 	// bad()
-	betterWithNilChan()
+	// betterWithNilChan()
+
+	writeNilDataToChan()
+}
+
+func writeNilDataToChan() {
+	c := make(chan error)
+	go func() {
+		time.Sleep(time.Second)
+		// c <- fmt.Errorf("test error")
+		c <- nil
+	}()
+
+	err := <-c
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("no error")
+	}
 }
 
 func nilChan() {
