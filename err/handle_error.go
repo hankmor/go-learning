@@ -8,9 +8,7 @@ import (
 
 func main() {
 	badProcessErr()
-
 	fmt.Println("======")
-
 	betterProcessErr()
 }
 
