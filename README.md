@@ -1,3 +1,3 @@
 # go-learning
 
-Demo projects for Golang.
+Examples and experiments when i am learning Go Lang.
