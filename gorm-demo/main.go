@@ -18,12 +18,15 @@ func main() {
 
 	//testDB()
 	//testCreate()
+	testSave()
 	//testFirstNotFound()
 	//testFirst()
+	//testLastNotFound()
+	//testFindOne()
 	//testFindSlice()
 	//testGenericMethod()
 
-	testFunctionalFirst()
+	//testFunctionalFirst()
 }
 
 func testDB() {
@@ -59,6 +62,10 @@ func testCreate() {
 	fmt.Println("rowAffect:", r2.RowsAffected) // 1
 }
 
+func testSave() {
+
+}
+
 func testFirstNotFound() {
 	fmt.Println("===== testFirstNotFound")
 	var usr *model.User
@@ -70,13 +77,14 @@ func testFirstNotFound() {
 	fmt.Println("after:", usr)                              // 零值 &{{0 0001-01-01 00:00:00 +0000 UTC...
 	fmt.Println(errors.Is(r.Error, gorm.ErrRecordNotFound)) // true
 	fmt.Println("err:", r.Error)                            // record not found
-	// 参数不寻址
+
+	// 参数不寻址，错误用法
 	fmt.Println("指针变量参数不寻址：")
 	var usr1 *model.User
 	r1 := DB.Model(model.User{}).Where("id = ?", 0).First(usr1)
-	fmt.Println("after:", usr1)                              // nil，注意这里返回的是nil
-	fmt.Println(errors.Is(r1.Error, gorm.ErrRecordNotFound)) // true
-	fmt.Println("err:", r1.Error)                            // record not found
+	fmt.Println("after:", usr1)                              // nil
+	fmt.Println(errors.Is(r1.Error, gorm.ErrRecordNotFound)) // false
+	fmt.Println("err:", r1.Error)                            // 错误信息：invalid value, should be pointer to struct or slice
 
 	// 非指针
 	fmt.Println("结构体变量参数寻址：")
@@ -94,6 +102,47 @@ func testFirstNotFound() {
 	fmt.Println("err:", r3.Error)                            // record not found
 }
 
+func testLastNotFound() {
+	fmt.Println("===== testLastNotFound")
+	var usr *model.User
+	fmt.Println("before:", usr)
+
+	// 查询不存在的记录，结果对象不会为nil，而是零值，结果的db中err不为nil
+
+	// 参数寻址
+	fmt.Println("指针变量参数寻址：")
+	r := DB.Model(model.User{}).Where("id = ?", 0).Last(&usr)
+	fmt.Println("after:", usr)                              // 零值 &{{0 0001-01-01 00:00:00 +0000 UTC...
+	fmt.Println(errors.Is(r.Error, gorm.ErrRecordNotFound)) // true
+	fmt.Println("err:", r.Error)                            // record not found
+
+	// 参数不寻址
+	fmt.Println("指针变量参数不寻址，错误用法：")
+	var usr1 *model.User
+	// 传递空的指针参数，gorm.DB.Error 会存储错误信息，这种使用方式错误
+	r1 := DB.Model(model.User{}).Where("id = ?", 0).Last(usr1)
+	fmt.Println("after:", usr1)                              // nil，注意这里返回的是nil
+	fmt.Println(errors.Is(r1.Error, gorm.ErrRecordNotFound)) // false
+	fmt.Println("err:", r1.Error)                            // 直接存在错误信息：invalid value, should be pointer to struct or slice
+
+	// 非指针
+	fmt.Println("结构体变量参数寻址：")
+	var usr2 model.User
+	r2 := DB.Model(model.User{}).Where("id = ?", 0).Last(&usr2)
+	fmt.Println("after:", usr2)                              // 零值，非指针 {{0 0001-01-01 00:00:00 +0000 UTC...
+	fmt.Println(errors.Is(r2.Error, gorm.ErrRecordNotFound)) // true
+	fmt.Println("err:", r2.Error)                            // record not found
+
+	fmt.Println("结构体变量参数不寻址：")
+	var usr3 model.User
+	// 传递结构体，正常执行，gorm.DB.Error 是record not found
+	r3 := DB.Model(model.User{}).Where("id = ?", 0).Last(usr3)
+	fmt.Println(usr2 == usr3)                                // true
+	fmt.Println("after:", usr3)                              // 零值，非指针 {{0 0001-01-01 00:00:00 +0000 UTC...
+	fmt.Println(errors.Is(r3.Error, gorm.ErrRecordNotFound)) // true
+	fmt.Println("err:", r3.Error)                            // record not found
+}
+
 func testFirst() {
 	id := 1 // 存在的记录
 	fmt.Println("===== testFirst")
@@ -103,13 +152,15 @@ func testFirst() {
 	r := DB.Model(model.User{}).Where("id = ?", id).First(&usr)
 	fmt.Println("after:", usr) // ok, 指针
 	fmt.Println("rowAffected:", r.RowsAffected)
+	fmt.Println("err:", r.Error)
 	// 参数不寻址
 	fmt.Println("指针变量参数不寻址：")
 	var usr1 *model.User
 	r1 := DB.Model(model.User{}).Where("id = ?", id).First(usr1)
-	fmt.Println("after:", usr1) // ok
-	fmt.Println("rowAffected:", r1.RowsAffected)
-	fmt.Println(usr == usr1) // false
+	fmt.Println("after:", usr1)                  // nil
+	fmt.Println("rowAffected:", r1.RowsAffected) // 0
+	fmt.Println("err:", r1.Error)                // 错误信息： invalid value, should be pointer to struct or slice
+	fmt.Println(usr == usr1)                     // false
 
 	// 非指针
 	fmt.Println("结构体变量参数寻址：")
@@ -117,11 +168,40 @@ func testFirst() {
 	r2 := DB.Model(model.User{}).Where("id = ?", id).First(&usr2)
 	fmt.Println("after:", usr2) // ok
 	fmt.Println("rowAffected:", r2.RowsAffected)
+	fmt.Println("err:", r2.Error)
 	fmt.Println("结构体变量参数不寻址：直接 panic")
 	//var usr3 model.User
 	//r3 := DB.Model(model.User{}).Where("id = ?", id).First(usr3) // panic: reflect: reflect.Value.SetUint using unaddressable value
 	//fmt.Println("after:", usr3)
 	//fmt.Println("rowAffected:", r3.RowsAffected) //
+}
+
+func testFindOne() {
+	id := 1
+	fmt.Println("===== testFindOne")
+	//var us model.User
+	//r := DB.Model(model.User{}).Where("id = ?", id).Find(us) // panic: reflect: reflect.Value.Set using unaddressable value
+	//fmt.Println("user:", us)
+	//fmt.Println("rowAffected:", r.RowsAffected)
+	//fmt.Println("err:", r.Error)
+
+	var us1 model.User
+	r1 := DB.Model(model.User{}).Where("id = ?", id).Find(&us1) // panic: reflect: reflect.Value.Set using unaddressable value
+	fmt.Println("user:", us1)
+	fmt.Println("rowAffected:", r1.RowsAffected) // 1
+	fmt.Println("err:", r1.Error)                // nil
+
+	var us2 *model.User
+	r2 := DB.Model(model.User{}).Where("id = ?", id).Find(us2)
+	fmt.Println("user:", us2)                    // nil
+	fmt.Println("rowAffected:", r2.RowsAffected) // 0
+	fmt.Println("err:", r2.Error)                // invalid value, should be pointer to struct or slice
+
+	var us3 []*model.User
+	r3 := DB.Model(model.User{}).Find(&us3) // panic: reflect: reflect.Value.Set using unaddressable value
+	fmt.Println("user:", us3)
+	fmt.Println("rowAffected:", r3.RowsAffected)
+	fmt.Println("err:", r3.Error)
 }
 
 func testFindSlice() {
