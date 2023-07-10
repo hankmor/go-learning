@@ -42,3 +42,10 @@ type Other struct {
 func NewOther() Other {
 	return Other{}
 }
+
+// 绑定接口
+// 结构provider
+// 绑定值
+// 使用结构体的字段作为提供者
+// 清理功能
+// 备用注入器语法
