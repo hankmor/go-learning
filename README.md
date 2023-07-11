@@ -1,5 +1,3 @@
-# golang developer roadmap
-
 This map is showing the learning road line for all go developers,
 click [here](https://roadmap.sh/golang) to show the whole and more maps if you will.
 
