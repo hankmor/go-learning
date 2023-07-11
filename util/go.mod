@@ -1,3 +1,3 @@
-module github.com/hankmor/go-learning/util
+module util
 
 go 1.18

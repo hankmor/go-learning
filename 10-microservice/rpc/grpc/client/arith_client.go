@@ -40,18 +40,18 @@ func main() {
 	if err1 != nil {
 		log.Fatalf("could not divide: %v", err1)
 	}
-	log.Printf("%d divide %d = %d, mod = %d", a, b, q.Quo, q.Rem)
+	log.Printf("%d divide %d = %d, basic = %d", a, b, q.Quo, q.Rem)
 
 	a, b = 20, 0
 	q, err1 = c.Divide(ctx, &mygrpc.Param{A: int32(a), B: int32(b)})
 	if err1 != nil {
 		log.Fatalf("could not divide: %v", err1)
 	}
-	log.Printf("%d divide %d = %d, mod = %d", a, b, q.Quo, q.Rem)
+	log.Printf("%d divide %d = %d, basic = %d", a, b, q.Quo, q.Rem)
 
 	/*
 		2022/06/20 23:24:40 10 multiply 2 = 20
-		2022/06/20 23:24:40 10 divide 2 = 5, mod = 0
+		2022/06/20 23:24:40 10 divide 2 = 5, basic = 0
 		2022/06/20 23:24:40 could not divide: rpc error: code = Unknown desc = divide by zero
 	*/
 }
