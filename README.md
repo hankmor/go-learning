@@ -1,5 +1,3 @@
-[TOC]
-
 # golang developer roadmap
 
 This map is showing the learning road line for all go developers,
@@ -7,7 +5,18 @@ click [here](https://roadmap.sh/golang) to show the whole and more maps if you w
 
 ![img.png](docs/img/golang-roadmap.png)
 
-## Learn the Basics
+* [Learn the Basics](#learn-the-basics)
+* [Go advanced](#go-advanced)
+* [Building CLI Applications](#building-cli-applications)
+* [ORMs](#orms)
+* [Web Frameworks](#web-frameworks)
+* [Logging](#logging)
+* [Go realtime communication](#go-realtime-communication)
+* [API Clients](#api-clients)
+* [Testing Go Code](#testing-go-code)
+* [Microservices](#microservices)
+
+## [Learn the Basics](#learn-the-basics)
 
 Learn the common concepts of Go like variables, loops, conditional statements, functions,
 data types, and so on. A good starting point for go basics is its Go’s official docs.
@@ -17,7 +26,7 @@ Visit the following resources to learn more:
 * [Official Go Tutorial](https://go.dev/doc/tutorial/)
 * [Go Tutorial](https://www.w3schools.com/go/index.php)
 
-## Go advanced
+## [Go advanced]()
 
 ### Modules
 
