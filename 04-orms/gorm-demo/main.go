@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gorm-demo/db"
 	"gorm-demo/model"
+	"gorm-demo/shard"
 	"gorm.io/gorm"
 	"reflect"
 )
@@ -13,12 +14,13 @@ var DB *gorm.DB
 
 func main() {
 	DB = db.Conn()
+	model.DB = DB
 	// 迁移 schema
-	_ = DB.AutoMigrate(model.User{}, model.Dept{})
+	_ = DB.AutoMigrate(model.User{}, model.Dept{}, model.User1{}, model.User2{})
 
 	//testDB()
 	//testCreate()
-	testSave()
+	//testSave()
 	//testFirstNotFound()
 	//testFirst()
 	//testLastNotFound()
@@ -27,6 +29,9 @@ func main() {
 	//testGenericMethod()
 
 	//testFunctionalFirst()
+
+	shard.TestShardModelByCompose()
+	//shard.TestShardModelByInterface()
 }
 
 func testDB() {
