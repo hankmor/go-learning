@@ -1,9 +1,9 @@
 package main
 
 import (
-	"cli_demo/cmd"
 	"fmt"
 	"github.com/urfave/cli/v2"
+	"help_demo/basic_demo/command"
 	"os"
 )
 
@@ -15,7 +15,7 @@ func main() {
 	cliApp.Usage = "cli usage demo"
 	cliApp.Version = "0.0.1"
 	// 系统命令
-	cliApp.Commands = cmd.Commands()
+	cliApp.Commands = command.Commands()
 	// 初始化之前调用
 	cliApp.Before = func(ctx *cli.Context) error {
 		fmt.Println("Before app run ...")

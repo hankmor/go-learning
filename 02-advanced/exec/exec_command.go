@@ -24,7 +24,7 @@ func noResult() {
 	cmd := exec.Command("ls", "-l", "/var/log/")
 	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("command.Run() failed with %s\n", err)
 	}
 }
 
@@ -36,7 +36,7 @@ func withResult() {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("combined out:\n%s\n", string(out))
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("command.Run() failed with %s\n", err)
 	}
 	fmt.Printf("combined out:\n%s\n", string(out))
 }
@@ -51,7 +51,7 @@ func withResultErr() {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("combined out:\n%s\n", string(out))
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("command.Run() failed with %s\n", err)
 	}
 	fmt.Printf("combined out:\n%s\n", string(out))
 }
@@ -63,7 +63,7 @@ func withResultOk() {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Printf("combined out:\n%s\n", string(out))
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("command.Run() failed with %s\n", err)
 	}
 	fmt.Printf("combined out:\n%s\n", string(out))
 }
@@ -79,7 +79,7 @@ func distinguishStdoutAndStderr() {
 	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
 	fmt.Printf("out:\n%s\nerr:\n%s\n", outStr, errStr)
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("command.Run() failed with %s\n", err)
 	}
 }
 
@@ -100,7 +100,7 @@ func setenvDemo() {
 	cmd := exec.Command("echo", os.ExpandEnv("$NAME"))
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Fatalf("cmd.Run() failed with %s\n", err)
+		log.Fatalf("command.Run() failed with %s\n", err)
 	}
 	fmt.Printf("%s", out)
 }

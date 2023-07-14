@@ -10,8 +10,8 @@ sudo brew install protoc
 安装go plugin
 
 ```shell
-$ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
-$ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+$ go install google.golang.org/protobuf/command/protoc-gen-go@v1.28
+$ go install google.golang.org/grpc/command/protoc-gen-go-grpc@v1.2
 ```
 使用文档：https://developers.google.com/protocol-buffers/docs/reference/go-generated
 

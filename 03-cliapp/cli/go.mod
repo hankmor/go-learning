@@ -1,4 +1,4 @@
-module bash_complete
+module cli_demo
 
 go 1.20
 
