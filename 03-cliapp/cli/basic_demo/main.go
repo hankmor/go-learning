@@ -1,9 +1,9 @@
 package main
 
 import (
+	"cli_demo/basic_demo/command"
 	"fmt"
 	"github.com/urfave/cli/v2"
-	"help_demo/basic_demo/command"
 	"os"
 )
 
