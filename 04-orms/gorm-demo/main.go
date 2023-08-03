@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"gorm-demo/db"
 	"gorm-demo/model"
-	"gorm-demo/shard"
 	"gorm.io/gorm"
 	"reflect"
 )
@@ -20,6 +19,7 @@ func main() {
 
 	//testDB()
 	//testCreate()
+	testCreateWithZeroVal()
 	//testSave()
 	//testFirstNotFound()
 	//testFirst()
@@ -27,10 +27,10 @@ func main() {
 	//testFindOne()
 	//testFindSlice()
 	//testGenericMethod()
+	//testDelete()
 
 	//testFunctionalFirst()
-
-	shard.TestShardModelByCompose()
+	//shard.TestShardModelByCompose()
 	//shard.TestShardModelByInterface()
 }
 
@@ -65,6 +65,13 @@ func testCreate() {
 	fmt.Println("id:", usr2.ID)                // 1
 	fmt.Println("handleerr:", r2.Error)        // nil
 	fmt.Println("rowAffect:", r2.RowsAffected) // 1
+}
+
+func testCreateWithZeroVal() {
+	var usr = model.User{Name: "张三", Age: 10, Dept: ""}
+	_ = DB.Create(&usr)
+	fmt.Println("id:", usr.ID)
+	fmt.Println("dept:", usr.Dept)
 }
 
 func testSave() {
@@ -226,6 +233,35 @@ func testFindSlice() {
 	var us2 []*model.User
 	DB.Model(model.User{}).Find(&us2) // panic: reflect: reflect.Value.Set using unaddressable value
 	fmt.Println(us2)                  // ok，指针
+}
+
+func testDelete() {
+	fmt.Println("===== testDelete")
+	r := DB.Delete(&model.User{})
+	if r.Error != nil {
+		fmt.Println(r.Error) // 没有指定主键，必须指定where条件，否则panic：WHERE conditions required
+	}
+
+	r = DB.Delete(&model.User{}, 1) // ok
+	if r.Error != nil {
+		fmt.Println(r.Error)
+	} else {
+		fmt.Println("delete by id ok")
+	}
+
+	r = DB.Delete(&model.User{}, "name = 'zhangsan'") // ok
+	if r.Error != nil {
+		fmt.Println(r.Error)
+	} else {
+		fmt.Println("delete by fixed condition ok")
+	}
+
+	r = DB.Delete(&model.User{}, "name = ?", "zhangsan") // ok
+	if r.Error != nil {
+		fmt.Println(r.Error)
+	} else {
+		fmt.Println("delete by condition ok")
+	}
 }
 
 func testGenericMethod() {
