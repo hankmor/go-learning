@@ -4,6 +4,7 @@ package main
 //go:generate wire
 func main() {
 	// 使用wire实现依赖注入
-	e := InitializeEvent()
+	name := "jason"
+	e := InitializeEvent(name)
 	e.Start()
 }

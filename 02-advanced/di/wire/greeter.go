@@ -12,8 +12,8 @@ type Event struct {
 	Greeter Greeter
 }
 
-func NewMessage() Message {
-	return Message("hello, hank!")
+func NewMessage(name string) Message {
+	return Message(fmt.Sprintf("hello, %s!", name))
 }
 
 func NewGreeter(msg Message) Greeter {
