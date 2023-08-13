@@ -14,14 +14,15 @@ import (
 
 // Injectors from wire.go:
 
-func initializeBaz(ctx context.Context) (foobarbaz.Baz, error) {
+func initializeBaz(ctx context.Context) (foobarbaz.Baz, func(), error) {
 	foo := foobarbaz.ProvideFoo()
 	bar := foobarbaz.ProvideBar(foo)
 	baz, err := foobarbaz.ProvideBaz(ctx, bar)
 	if err != nil {
-		return foobarbaz.Baz{}, err
+		return foobarbaz.Baz{}, nil, err
 	}
-	return baz, nil
+	return baz, func() {
+	}, nil
 }
 
 // wire.go:
