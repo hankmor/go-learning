@@ -17,7 +17,8 @@ var OtherSet = wire.NewSet(foobarbaz.NewOther)
 // MegaSet 可以将其他集合加入新的集合中
 var MegaSet = wire.NewSet(SuperSet, OtherSet)
 
-func initializeBaz(ctx context.Context) (foobarbaz.Baz, error) {
-	wire.Build(MegaSet)
-	return foobarbaz.Baz{}, nil
+func initializeBaz(ctx context.Context) (foobarbaz.Baz, func(), error) {
+	panic(wire.Build(MegaSet))
+	return foobarbaz.Baz{}, func() {
+	}, nil
 }

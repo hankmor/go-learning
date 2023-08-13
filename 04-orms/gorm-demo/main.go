@@ -6,7 +6,9 @@ import (
 	"gorm-demo/db"
 	"gorm-demo/model"
 	"gorm.io/gorm"
+	"math/rand"
 	"reflect"
+	"time"
 )
 
 var DB *gorm.DB
@@ -19,7 +21,7 @@ func main() {
 
 	//testDB()
 	//testCreate()
-	testCreateWithZeroVal()
+	//testCreateWithZeroVal()
 	//testSave()
 	//testFirstNotFound()
 	//testFirst()
@@ -32,6 +34,8 @@ func main() {
 	//testFunctionalFirst()
 	//shard.TestShardModelByCompose()
 	//shard.TestShardModelByInterface()
+
+	testTx()
 }
 
 func testDB() {
@@ -68,10 +72,10 @@ func testCreate() {
 }
 
 func testCreateWithZeroVal() {
-	var usr = model.User{Name: "张三", Age: 10, Dept: ""}
+	var usr = model.User{Name: "张三", Age: 10, Dept: ""} //
 	_ = DB.Create(&usr)
 	fmt.Println("id:", usr.ID)
-	fmt.Println("dept:", usr.Dept)
+	fmt.Println("dept:", usr.Dept) // nil，当dept为零值时，由于数据库default是null，所以gorm不会设置为零值，而是使用数据库默认值
 }
 
 func testSave() {
@@ -323,4 +327,36 @@ func testFunctionalFirst() {
 		panic(err)
 	}
 	fmt.Println(user)
+}
+
+func testTx() {
+	rd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	i := rd.Intn(10)
+	err := DB.Transaction(func(tx *gorm.DB) error {
+		usr := &model.User{Name: "test-tx-out"}
+		err := tx.Create(&usr).Error
+		if err != nil {
+			return err
+		}
+		if i%3 == 0 {
+			//return fmt.Errorf("out tx return an error")
+			panic(fmt.Errorf("out tx return an error"))
+		}
+		return tx.Transaction(func(tx1 *gorm.DB) error {
+			usr := &model.User{Name: "test-tx-in"}
+			err := tx.Create(&usr).Error
+			if err != nil {
+				return err
+			}
+			if i%3 == 1 {
+				panic(fmt.Errorf("inner tx return an error"))
+			}
+			return nil
+		})
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("ok")
+	}
 }
