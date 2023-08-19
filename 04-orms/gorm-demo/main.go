@@ -22,6 +22,8 @@ func main() {
 	//testDB()
 	//testCreate()
 	//testCreateWithZeroVal()
+	//testBatchCreate()
+	testBatchCreateSize()
 	//testSave()
 	//testFirstNotFound()
 	//testFirst()
@@ -35,7 +37,7 @@ func main() {
 	//shard.TestShardModelByCompose()
 	//shard.TestShardModelByInterface()
 
-	testTx()
+	//testTx()
 }
 
 func testDB() {
@@ -76,6 +78,24 @@ func testCreateWithZeroVal() {
 	_ = DB.Create(&usr)
 	fmt.Println("id:", usr.ID)
 	fmt.Println("dept:", usr.Dept) // nil，当dept为零值时，由于数据库default是null，所以gorm不会设置为零值，而是使用数据库默认值
+}
+
+func testBatchCreateSize() {
+	var usr1 = &model.User{Name: "张三", Age: 10}  //
+	var usr2 = &model.User{Name: "张三1", Age: 10} //
+	r := DB.CreateInBatches([]*model.User{usr1, usr2}, 1)
+	fmt.Println("id1:", usr1.ID)
+	fmt.Println("id2:", usr2.ID)
+	fmt.Println("err:", r.Error)
+}
+
+func testBatchCreate() {
+	var usr1 = &model.User{Name: "张三", Age: 10}  //
+	var usr2 = &model.User{Name: "张三1", Age: 10} //
+	r := DB.Create([]*model.User{usr1, usr2})
+	fmt.Println("id1:", usr1.ID)
+	fmt.Println("id2:", usr2.ID)
+	fmt.Println("err:", r.Error)
 }
 
 func testSave() {
