@@ -5,23 +5,28 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"io"
 	"os"
+	"time"
 )
 
 var log *zap.Logger
 
 func main() {
-	fmt.Println("basic demo:")
-	basic()
+	//fmt.Println("basic demo:")
+	//basic()
+	//
+	//fmt.Println("write file")
+	//writeFile()
+	//
+	//fmt.Println("write file and console")
+	//writeFileAndConsole()
+	//
+	//fmt.Println("write file by log level")
+	//writeFileByLogLvl()
 
-	fmt.Println("write file")
-	writeFile()
-
-	fmt.Println("write file and console")
-	writeFileAndConsole()
-
-	fmt.Println("write file by log level")
-	writeFileByLogLvl()
+	fmt.Println("write no output")
+	writeNoOutput()
 }
 
 func basic() {
@@ -142,4 +147,19 @@ func writeFileByLogLvl() {
 	log.Info("hello info")
 	log.Debug("hello debug")
 	log.Error("hello error")
+}
+
+func writeNoOutput() {
+	cfg := zap.NewProductionConfig()
+	core := zapcore.NewCore(
+		zapcore.NewJSONEncoder(cfg.EncoderConfig),
+		zapcore.AddSync(io.Discard), // writer不会做任何处理，没有任何输出
+		zap.InfoLevel,
+	)
+	logger := zap.New(core)
+	logger.Info("failed to fetch URL",
+		zap.String("url", `http://foo.com`),
+		zap.Int("attempt", 3),
+		zap.Duration("backoff", time.Second),
+	)
 }

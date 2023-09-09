@@ -2,23 +2,39 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	nested "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/sirupsen/logrus"
 	"io"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
-	// normalLog()
-	// printCaller()
-	// addField()
-	// redirectOutput()
-	// printJson()
+	//fmt.Println("normalLog:")
+	//normalLog()
 
-	customFormatter()
+	//fmt.Println("printCaller:")
+	//printCaller()
 
-	// thirdPartyFormatter()
+	//fmt.Println("addField:")
+	//addField()
+
+	//fmt.Println("redirectOutput:")
+	//redirectOutput()
+
+	//fmt.Println("printJson:")
+	//printJson()
+
+	//fmt.Println("customFormatter:")
+	//customFormatter()
+
+	//fmt.Println("thirdPartyFormatter:")
+	//thirdPartyFormatter()
+
+	fmt.Println("write no output")
+	writeNoOutput()
 }
 
 func normalLog() {
@@ -117,4 +133,14 @@ func thirdPartyFormatter() {
 		"name": "dj",
 		"age":  18,
 	}).Info("info msg")
+}
+
+func writeNoOutput() {
+	logger := logrus.New()
+	logger.SetOutput(io.Discard)
+	logger.WithFields(logrus.Fields{
+		"url":     "http://foo.com",
+		"attempt": 3,
+		"backoff": time.Second,
+	}).Info("failed to fetch URL")
 }
