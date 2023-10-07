@@ -26,3 +26,9 @@ func t3() (i int) {
 	defer func() { i++ }() // 先执行 i++，再返回
 	return 1               // 返回2
 }
+
+func sumWithDefer() {
+	defer func() {
+		sum(100)
+	}()
+}
