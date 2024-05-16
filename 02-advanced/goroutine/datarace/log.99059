@@ -1,0 +1,33 @@
+==================
+WARNING: DATA RACE
+Write at 0x00c000102060 by goroutine 6:
+  runtime.mapassign_faststr()
+      /Users/hank/software/go1.20.5/src/runtime/map_faststr.go:203 +0x0
+  main.main.func1()
+      /Users/hank/workspace/mine/go-projects/go-learning/02-advanced/goroutine/datarace/race_demo.go:10 +0x50
+
+Previous write at 0x00c000102060 by main goroutine:
+  runtime.mapassign_faststr()
+      /Users/hank/software/go1.20.5/src/runtime/map_faststr.go:203 +0x0
+  main.main()
+      /Users/hank/workspace/mine/go-projects/go-learning/02-advanced/goroutine/datarace/race_demo.go:13 +0x13a
+
+Goroutine 6 (running) created at:
+  main.main()
+      /Users/hank/workspace/mine/go-projects/go-learning/02-advanced/goroutine/datarace/race_demo.go:9 +0x11d
+==================
+==================
+WARNING: DATA RACE
+Write at 0x00c000104498 by goroutine 6:
+  main.main.func1()
+      /Users/hank/workspace/mine/go-projects/go-learning/02-advanced/goroutine/datarace/race_demo.go:10 +0x5c
+
+Previous write at 0x00c000104498 by main goroutine:
+  main.main()
+      /Users/hank/workspace/mine/go-projects/go-learning/02-advanced/goroutine/datarace/race_demo.go:13 +0x146
+
+Goroutine 6 (running) created at:
+  main.main()
+      /Users/hank/workspace/mine/go-projects/go-learning/02-advanced/goroutine/datarace/race_demo.go:9 +0x11d
+==================
+Found 2 data race(s)

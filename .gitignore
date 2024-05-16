@@ -26,3 +26,5 @@ pkg
 
 *.log
 .DS_Store
+*.txt
+ignore.go
