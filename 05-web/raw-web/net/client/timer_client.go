@@ -3,12 +3,12 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/hankmor/go-learning/util"
 	"io"
 	"log"
 	"net"
 	"os"
 	"sync"
+	"util"
 )
 
 var wg sync.WaitGroup
