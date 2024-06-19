@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	// race()
-	fixRace()
+	race()
+	// fixRace()
 }
 
 func race() {
