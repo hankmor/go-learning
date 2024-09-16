@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"gorm-demo/db"
 	"gorm-demo/model"
-	"gorm.io/gorm"
 	"math/rand"
 	"reflect"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
@@ -19,25 +20,26 @@ func main() {
 	// 迁移 schema
 	_ = DB.AutoMigrate(model.User{}, model.Dept{}, model.User1{}, model.User2{})
 
-	//testDB()
-	//testCreate()
-	//testCreateWithZeroVal()
-	//testBatchCreate()
-	testBatchCreateSize()
-	//testSave()
-	//testFirstNotFound()
-	//testFirst()
-	//testLastNotFound()
-	//testFindOne()
-	//testFindSlice()
-	//testGenericMethod()
-	//testDelete()
+	// testDB()
+	// testCreate()
+	// testCreateWithZeroVal()
+	// testBatchCreate()
+	// testBatchCreateSize()
+	// testSave()
+	// testFirstNotFound()
+	// testFirst()
+	// testLastNotFound()
+	// testFindOne()
+	// testFindSlice()
+	// testGenericMethod()
+	// testDelete()
 
-	//testFunctionalFirst()
-	//shard.TestShardModelByCompose()
-	//shard.TestShardModelByInterface()
+	// testFunctionalFirst()
+	// shard.TestShardModelByCompose()
+	// shard.TestShardModelByInterface()
 
-	//testTx()
+	// testTx()
+	testExecTx()
 }
 
 func testDB() {
@@ -59,14 +61,14 @@ func testDB() {
 
 func testCreate() {
 	fmt.Println("结构体参数不寻址，直接panic: ")
-	//var usr1 = model.User{Name: "张三", Age: 10}
-	//r1 := DB.Create(usr1) // 直接panic: reflect: reflect.Value.Set using unaddressable value
-	//fmt.Println("id:", usr1.ID)
-	//fmt.Println("handleerr:", r1.Error)
-	//fmt.Println("rowAffect:", r1.RowsAffected)
+	// var usr1 = model.User{Name: "张三", Age: 10}
+	// r1 := DB.Create(usr1) // 直接panic: reflect: reflect.Value.Set using unaddressable value
+	// fmt.Println("id:", usr1.ID)
+	// fmt.Println("handleerr:", r1.Error)
+	// fmt.Println("rowAffect:", r1.RowsAffected)
 
 	fmt.Println("结构体参数寻址寻址: ")
-	var usr2 = model.User{Name: "张三", Age: 10}
+	usr2 := model.User{Name: "张三", Age: 10}
 	r2 := DB.Create(&usr2)
 	fmt.Println("id:", usr2.ID)                // 1
 	fmt.Println("handleerr:", r2.Error)        // nil
@@ -74,15 +76,15 @@ func testCreate() {
 }
 
 func testCreateWithZeroVal() {
-	var usr = model.User{Name: "张三", Age: 10, Dept: ""} //
+	usr := model.User{Name: "张三", Age: 10, Dept: ""} //
 	_ = DB.Create(&usr)
 	fmt.Println("id:", usr.ID)
 	fmt.Println("dept:", usr.Dept) // nil，当dept为零值时，由于数据库default是null，所以gorm不会设置为零值，而是使用数据库默认值
 }
 
 func testBatchCreateSize() {
-	var usr1 = &model.User{Name: "张三", Age: 10}  //
-	var usr2 = &model.User{Name: "张三1", Age: 10} //
+	usr1 := &model.User{Name: "张三", Age: 10}  //
+	usr2 := &model.User{Name: "张三1", Age: 10} //
 	r := DB.CreateInBatches([]*model.User{usr1, usr2}, 1)
 	fmt.Println("id1:", usr1.ID)
 	fmt.Println("id2:", usr2.ID)
@@ -90,8 +92,8 @@ func testBatchCreateSize() {
 }
 
 func testBatchCreate() {
-	var usr1 = &model.User{Name: "张三", Age: 10}  //
-	var usr2 = &model.User{Name: "张三1", Age: 10} //
+	usr1 := &model.User{Name: "张三", Age: 10}  //
+	usr2 := &model.User{Name: "张三1", Age: 10} //
 	r := DB.Create([]*model.User{usr1, usr2})
 	fmt.Println("id1:", usr1.ID)
 	fmt.Println("id2:", usr2.ID)
@@ -99,7 +101,6 @@ func testBatchCreate() {
 }
 
 func testSave() {
-
 }
 
 func testFirstNotFound() {
@@ -206,20 +207,20 @@ func testFirst() {
 	fmt.Println("rowAffected:", r2.RowsAffected)
 	fmt.Println("handleerr:", r2.Error)
 	fmt.Println("结构体变量参数不寻址：直接 panic")
-	//var usr3 model.User
-	//r3 := DB.Model(model.User{}).Where("id = ?", id).First(usr3) // panic: reflect: reflect.Value.SetUint using unaddressable value
-	//fmt.Println("after:", usr3)
-	//fmt.Println("rowAffected:", r3.RowsAffected) //
+	// var usr3 model.User
+	// r3 := DB.Model(model.User{}).Where("id = ?", id).First(usr3) // panic: reflect: reflect.Value.SetUint using unaddressable value
+	// fmt.Println("after:", usr3)
+	// fmt.Println("rowAffected:", r3.RowsAffected) //
 }
 
 func testFindOne() {
 	id := 1
 	fmt.Println("===== testFindOne")
-	//var us model.User
-	//r := DB.Model(model.User{}).Where("id = ?", id).Find(us) // panic: reflect: reflect.Value.Set using unaddressable value
-	//fmt.Println("user:", us)
-	//fmt.Println("rowAffected:", r.RowsAffected)
-	//fmt.Println("handleerr:", r.Error)
+	// var us model.User
+	// r := DB.Model(model.User{}).Where("id = ?", id).Find(us) // panic: reflect: reflect.Value.Set using unaddressable value
+	// fmt.Println("user:", us)
+	// fmt.Println("rowAffected:", r.RowsAffected)
+	// fmt.Println("handleerr:", r.Error)
 
 	var us1 model.User
 	r1 := DB.Model(model.User{}).Where("id = ?", id).Find(&us1) // panic: reflect: reflect.Value.Set using unaddressable value
@@ -242,17 +243,17 @@ func testFindOne() {
 
 func testFindSlice() {
 	fmt.Println("===== testFindSlice")
-	//var us []model.User
-	//DB.Model(model.User{}).Find(us) // panic: reflect: reflect.Value.Set using unaddressable value
-	//fmt.Println(us)
+	// var us []model.User
+	// DB.Model(model.User{}).Find(us) // panic: reflect: reflect.Value.Set using unaddressable value
+	// fmt.Println(us)
 
 	var us1 []model.User
 	DB.Model(model.User{}).Find(&us1) // panic: reflect: reflect.Value.Set using unaddressable value
 	fmt.Println(us1)                  // ok，元素为结构体
 
-	//var us2 []*model.User
-	//DB.Model(model.User{}).Find(us2) // panic: reflect: reflect.Value.Set using unaddressable value
-	//fmt.Println(us2)
+	// var us2 []*model.User
+	// DB.Model(model.User{}).Find(us2) // panic: reflect: reflect.Value.Set using unaddressable value
+	// fmt.Println(us2)
 
 	var us2 []*model.User
 	DB.Model(model.User{}).Find(&us2) // panic: reflect: reflect.Value.Set using unaddressable value
@@ -290,9 +291,9 @@ func testDelete() {
 
 func testGenericMethod() {
 	fmt.Println("===== testGenericMethod")
-	//DB.Create(&model.Dept{Name: "IT"})
-	var findAll = func(db *gorm.DB, entity any) any {
-		//m := reflect.New(reflect.SliceOf(reflect.TypeOf(entity))).Elem().Interface()
+	// DB.Create(&model.Dept{Name: "IT"})
+	findAll := func(db *gorm.DB, entity any) any {
+		// m := reflect.New(reflect.SliceOf(reflect.TypeOf(entity))).Elem().Interface()
 		m := reflect.New(reflect.SliceOf(reflect.TypeOf(entity))).Interface()
 		fmt.Println("type: ", reflect.TypeOf(m))
 		db.Model(entity).Find(m)
@@ -337,7 +338,7 @@ func (db *DW) First(out interface{}, opts ...QueryOption) error {
 }
 
 func testFunctionalFirst() {
-	var DBW = &DW{DB}
+	DBW := &DW{DB}
 	var user model.User
 	err := DBW.First(&user,
 		Where("name = ?", "张三"),
@@ -359,7 +360,7 @@ func testTx() {
 			return err
 		}
 		if i%3 == 0 {
-			//return fmt.Errorf("out tx return an error")
+			// return fmt.Errorf("out tx return an error")
 			panic(fmt.Errorf("out tx return an error"))
 		}
 		return tx.Transaction(func(tx1 *gorm.DB) error {
@@ -373,6 +374,28 @@ func testTx() {
 			}
 			return nil
 		})
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("ok")
+	}
+}
+
+func testExecTx() {
+	err := DB.Transaction(func(tx *gorm.DB) error {
+		// usr := &model.User{Name: "abc", Age: 10}
+		// err := tx.Create(&usr).Error
+		var u model.User
+		err := tx.Where("name = 'abc'").First(&u).Error
+		if err != nil {
+			return err
+		}
+		err = tx.Exec("update users set age=age+1 where id = ?", u.ID).Error
+		if err != nil {
+			panic(err)
+		}
+		return fmt.Errorf("make an error")
 	})
 	if err != nil {
 		fmt.Println(err.Error())
