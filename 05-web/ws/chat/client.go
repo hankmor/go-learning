@@ -64,7 +64,7 @@ func (c *Client) read() {
 			break
 		}
 		// 格式化消息
-		msg = bytes.TrimSpace(bytes.Replace(msg, []byte{'\n'}, []byte{' '}, -1))
+		msg = bytes.TrimSpace(bytes.ReplaceAll(msg, []byte{'\n'}, []byte{' '}))
 		// 向 hub 写入消息
 		c.hub.broadcast <- msg
 	}
@@ -74,7 +74,7 @@ func (c *Client) read() {
 // 每一个 conn 都会创建一个 goroutine 来调用该方法，需要确保 conn 上最多一个 writer
 // 来并发调用该方法
 func (c *Client) write() {
-	// TODO why need ticker?
+	// why need ticker? 定时心跳监测用
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()

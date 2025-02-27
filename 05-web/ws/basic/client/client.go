@@ -38,15 +38,22 @@ func main() {
 	}()
 
 	// send message
-	ticker := time.NewTicker(time.Second)
+	ticker := time.NewTicker(time.Second * 2)
+	cnt := 0
 	defer ticker.Stop()
 	for {
 		select {
+		// 这里t为系统当前时间
 		case t := <-ticker.C:
-			err := conn.WriteMessage(websocket.TextMessage, []byte(t.String()))
+			err := conn.WriteMessage(websocket.TextMessage, []byte("当前时间: "+t.String()))
 			if err != nil {
 				log.Fatal("send message error:", err)
-				break
+				return
+			}
+			cnt++
+			// 主动关闭连接
+			if cnt > 5 {
+				return
 			}
 		case <-interrupt: // 接收到中断消息
 			fmt.Println("interrupt")
@@ -55,9 +62,11 @@ func main() {
 				log.Println("write close:", err)
 			}
 			// 如果操作超时，退出客户端链接
-			select {
-			case <-time.After(time.Second):
-			}
+			// select {
+			// case <-time.After(time.Second):
+			// }
+			fmt.Println("连接中断")
+			time.Sleep(time.Second)
 			return
 		}
 	}
