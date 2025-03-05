@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Golang 实时交易 Demo</title>
+  <style>
+    /* 样式与之前相同 */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    #trades {
+      border: 1px solid #ddd;
+      padding: 10px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    .trade-item {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>实时交易数据 (RMB/USD)</h1>
+  <div id="trades"></div>
+
+  <script>
+    const tradesContainer = document.getElementById('trades');
+    const ws = new WebSocket('ws://localhost:8080/ws');
+
+    ws.onmessage = (event) => {
+      const trade = JSON.parse(event.data);
+      addTradeToDOM(trade);
+    };
+
+    ws.onerror = (event) => {
+      console.log("error: ", event)
+    }
+
+    ws.onclose = (event) => {
+      console.log("closed: ", event)
+    }
+
+    function addTradeToDOM(trade) {
+      const div = document.createElement('div');
+      div.className = 'trade-item';
+      div.innerHTML = `
+                <span style="color: green">${new Date(trade.timestamp).toLocaleString()}</span>
+                | 价格: $${trade.price.toFixed(2)} 
+                | 数量: ${trade.quantity.toFixed(4)} RMB
+            `;
+      tradesContainer.prepend(div);
+
+      if (tradesContainer.children.length > 50) {
+        tradesContainer.lastChild.remove();
+      }
+    }
+  </script>
+</body>
+
+</html>
