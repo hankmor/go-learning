@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Gateway Demo</title>
+  <style>
+    .item {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>WebSocket Gateway Demo</h2>
+  <button onclick="connectWebSocket()">Connect</button>
+  <button onclick="disconnectWebSocket()">Disconnect</button>
+  <input type="text" id="message" placeholder="Type a message">
+  <button onclick="sendMessage()">Send</button>
+  <div id="messages"></div>
+
+  <script>
+    let ws, it
+    let messages = document.getElementById("messages");
+    let message_input = document.getElementById("message");
+    function connectWebSocket() {
+      // nginx addr
+      ws = new WebSocket("ws://localhost:8889/ws");
+      if (!ws) {
+        messages.textContent = "WebSocket is not initialized.";
+      }
+      ws.onopen = () => {
+        appendMessage("✅ WebSocket connected");
+        it = window.setInterval(function () {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send("ping")
+          }
+        }, 5000)
+      };
+
+      ws.onmessage = (event) => {
+        appendMessage("Received: " + event.data);
+      };
+
+      ws.onclose = () => {
+        appendMessage("❌ WebSocket disconnected")
+        // setTimeout(connectWebSocket, 3000); // 3s 后重试
+      };
+
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
+    }
+
+    function disconnectWebSocket() {
+      appendMessage("You close your connection")
+      console.log(ws)
+      ws && ws.close()
+      it && clearInterval(it)
+    }
+
+    function sendMessage() {
+      let msg = message_input.value;
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(msg);
+      }
+    }
+
+    function appendMessage(content) {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = content
+      messages.prepend(div);
+    }
+  </script>
+</body>
+
+</html>
