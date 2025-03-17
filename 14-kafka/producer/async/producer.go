@@ -35,7 +35,7 @@ func main() {
 			msg := &sarama.ProducerMessage{
 				Topic: Topic,
 				// 根据partition生成random key，使消息路由到不同的partition中，这样不同的消费者都可以消费
-				Key:   sarama.StringEncoder(fmt.Sprintf("%s", rand.Intn(partition))),
+				Key:   sarama.StringEncoder(fmt.Sprintf("%d", rand.Intn(partition))),
 				Value: sarama.StringEncoder(fmt.Sprintf("Async message from Sarama, now: %v", c)),
 			}
 			producer.Input() <- msg
