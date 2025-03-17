@@ -31,16 +31,14 @@ func main() {
 	partition := 3
 	// 消息通道
 	go func() {
-		for {
-			select {
-			case c := <-ticker.C:
-				msg := &sarama.ProducerMessage{
-					Topic: Topic,
-					Key:   sarama.StringEncoder(fmt.Sprintf("%s", rand.Intn(partition))),
-					Value: sarama.StringEncoder(fmt.Sprintf("Async message from Sarama, now: %v", c)),
-				}
-				producer.Input() <- msg
+		for c := range ticker.C {
+			msg := &sarama.ProducerMessage{
+				Topic: Topic,
+				// 根据partition生成random key，使消息路由到不同的partition中，这样不同的消费者都可以消费
+				Key:   sarama.StringEncoder(fmt.Sprintf("%s", rand.Intn(partition))),
+				Value: sarama.StringEncoder(fmt.Sprintf("Async message from Sarama, now: %v", c)),
 			}
+			producer.Input() <- msg
 		}
 	}()
 
