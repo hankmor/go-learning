@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"time"
 
 	"github.com/IBM/sarama"
@@ -28,14 +27,15 @@ func main() {
 	defer producer.Close()
 
 	ticker := time.NewTicker(2 * time.Second)
-	partition := 3
+	// partition := 3
 	// 消息通道
 	go func() {
 		for c := range ticker.C {
 			msg := &sarama.ProducerMessage{
 				Topic: Topic,
 				// 根据partition生成random key，使消息路由到不同的partition中，这样不同的消费者都可以消费
-				Key:   sarama.StringEncoder(fmt.Sprintf("%d", rand.Intn(partition))),
+                // 也可以不要key，直接发送消息到topic，消息会按照策略转发到分区中
+				// Key:   sarama.StringEncoder(fmt.Sprintf("%d", rand.Intn(partition))),
 				Value: sarama.StringEncoder(fmt.Sprintf("Async message from Sarama, now: %v", c)),
 			}
 			producer.Input() <- msg
