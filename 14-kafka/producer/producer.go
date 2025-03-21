@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"kafka-demo/consumer/comm"
 	"log"
 	"time"
 
@@ -21,7 +22,7 @@ func main() {
 	config.Producer.Return.Successes = true          // 返回成功消息
 
 	// 创建同步生产者
-	producer, err := sarama.NewSyncProducer([]string{"localhost:9092"}, config)
+	producer, err := sarama.NewSyncProducer(comm.KafkaEndpoints, config)
 	if err != nil {
 		log.Fatalf("Failed to start producer: %v", err)
 	}
